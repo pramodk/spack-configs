@@ -249,7 +249,7 @@ spack compiler find /usr/local/Cellar/llvm/3.9.0/
 
 Second important step is to tell spack about `existing` packages. Spack can build most of the environment for you but we want to use packages like `MPI`, `CMake`, `autotools` etc. provided by the system. This is more important on HPC facilities where packages like `MPI` are tuned for hardware and provided by supercomputing center/vendors. We don't want to install those ourselves from source. This is where `packages.yaml` file in `$HOME/.spack/darwin/` comes into action (`darwin` here is platform name). The `packages.yaml` tells spack which existing packages to use, their versions, compiler preferences etc. For example, if you try to build package which need `CMake`, Spack will try to build `CMake` and all its dependencies from source. But we have previously installed `CMake` with `brew` and we can tell spack to use it using below `packages.yaml` :
 
-```bash
+```yaml
 packages:
     cmake:
         paths:
@@ -268,7 +268,8 @@ When we specify dependency like `depends_on('cmake', type='build')`, Spack will 
 
 We can provide preferences for all packages in `packages.yaml`. For example, in the below configuration we specified compiler preferences for building any package. Also, we specify `mpich` as `MPI` provider.
 
-```bash
+```yaml
+packages:
    all:
        compiler: [gcc@4.9.3, clang@7.3.0-apple]
        providers:
@@ -293,7 +294,8 @@ Variants:
 
 On OS X if you don't have fortran compilers with `llvm` toolchain, you can disable fortran variant in `packages.yaml` as:
 
-```bash
+```yaml
+packages:
    hdf5:
        variants: ~fortran
 ```
