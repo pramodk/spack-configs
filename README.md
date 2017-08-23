@@ -138,7 +138,8 @@ brew install openmpi
 Spack uses `environment-module` i.e. `Modules` and `Lmod` packages to load / unload modules. You can install those using Spack or from `Homebrew` :
 
 ```bash
-brew install modules lmod
+brew install modules
+brew install homebrew/science/lmod
 ```
 
 If you are using parallel HDF5, install it using:
