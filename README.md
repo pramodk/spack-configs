@@ -161,6 +161,12 @@ LMOD_HOME=`brew --prefix lmod`
 source $LMOD_HOME/lmod/init/bash
 ```
 
+Building Qt by hand is quite complex. Let's use the one kindly provided by brew:
+
+```bash
+brew install qt55
+```
+
 Lets start with Spack now!
 
 #### Compiler Configuration ####
