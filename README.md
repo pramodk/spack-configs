@@ -19,7 +19,7 @@ These steps are independent of any platform i.e. you have to do this if you want
 We will use following prefix throughout the scripts. Set those according to your convenience:
 
 ```bash
-export SOURCE_HOME_DIR=$HOME/workarena/software/sources
+SOURCE_HOME_DIR=$HOME/workarena/software/sources
 ```
 
 
