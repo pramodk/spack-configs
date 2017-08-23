@@ -327,9 +327,9 @@ packages:
 
     cmake:
         paths:
-            cmake@3.8.2: /usr/local
+            cmake@3.9.1: /usr/local
         buildable: False
-        version: [3.8.2]
+        version: [3.9.1]
 
     autoconf:
         paths:
@@ -372,7 +372,7 @@ packages:
             pkg-config@0.29.2%clang@8.1.0-apple: /usr/local
             pkg-config@0.29.2%gcc@4.9.4: /usr/local
         buildable: False
-        version: [0.29.1]
+        version: [0.29.2]
 
     environment-modules:
         paths:
@@ -388,10 +388,10 @@ packages:
 
     hdf5:
         paths:
-            hdf5@1.8.17: /usr/local
+            hdf5@1.10.1: /usr/local
         buildable: False
         variants: ~fortran
-        version: [1.8.17]
+        version: [1.10.1]
 
     zlib:
         paths:
