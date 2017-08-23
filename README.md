@@ -400,9 +400,9 @@ packages:
 
     zlib:
         paths:
-            zlib@1.2.8: /usr/local
+            zlib@1.2.11: /usr/local
         buildable: False
-        version: [1.2.8]
+        version: [1.2.11]
 
     qt:
         paths:
