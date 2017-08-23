@@ -276,7 +276,7 @@ We can provide preferences for all packages in `packages.yaml`. For example, in 
 ```yaml
 packages:
    all:
-       compiler: [gcc@4.9.3, clang@7.3.0-apple]
+       compiler: [gcc@4.9.4, clang@8.1.0-apple]
        providers:
            mpi: [mpich]
 ```
@@ -428,7 +428,7 @@ packages:
         variants: ~openmp
 
     all:
-        compiler: [gcc@4.9.3, clang@8.1.0-apple]
+        compiler: [gcc@4.9.4, clang@8.1.0-apple]
         providers:
             mpi: [mpich]
 ```
