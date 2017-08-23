@@ -30,11 +30,12 @@ Clone spack repository from GitHub. You can use [official repository](https://gi
 cd $SOURCE_HOME_DIR
 git clone https://github.com/pramodskumbhar/spack.git
 
-# if you want to track upstream development branch
-
-```bash
 cd spack
+git checkout upstream
+
+# if you want to track upstream development branch
 git remote add llnl https://github.com/llnl/spack.git
+git fetch llnl
 ```
 
 #### Update .bashrc or .bash_profile ####
