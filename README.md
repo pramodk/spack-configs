@@ -31,6 +31,8 @@ cd $SOURCE_HOME_DIR
 git clone https://github.com/pramodskumbhar/spack.git
 
 # if you want to track upstream development branch
+
+```bash
 cd spack
 git remote add llnl https://github.com/llnl/spack.git
 ```
