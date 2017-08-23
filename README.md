@@ -37,6 +37,16 @@ cd spack
 git remote add llnl https://github.com/llnl/spack.git
 ```
 
+#### Update .bashrc or .bash_profile ####
+In order to access spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X): 
+
+```bash
+export SPACK_ROOT=$HOME/workarena/software/sources/spack
+source $SPACK_ROOT/share/spack/setup-env.sh
+```
+
+We assume that [Environment Modules](http://modules.sourceforge.net/) is properly installed and `module` command is available on the `PATH` environment variable. Check [Spack documentation](https://spack.readthedocs.io/en/latest/getting_started.html#installenvironmentmodules) if this is not the case.
+
 #### Additional Packages ####
 
 NEURON and CoreNEURON related packages are maintained in separate repository. In order to build those packages with Spack, add bellow GitHub repository as Spack repository:
@@ -48,17 +58,6 @@ spack repo add --scope site `pwd`/spack-packages
 ```
 
 Make sure to update / pull both repositories if there are any upstream changes.
-
-
-#### Update .bashrc or .bash_profile ####
-In order to access spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X) : 
-
-```bash
-export SPACK_ROOT=$HOME/workarena/software/sources/spack
-source $SPACK_ROOT/share/spack/setup-env.sh
-```
-
-We assume that [Environment Modules](http://modules.sourceforge.net/) is properly installed and `module` command is available on the `PATH` environment variable. Check [Spack documentation](https://spack.readthedocs.io/en/latest/getting_started.html#installenvironmentmodules) if this is not the case.
 
 ## Platform Specific Configuration ##
 
@@ -264,7 +263,7 @@ In the above configuration we told Spack to use `CMake` from `/usr/local` (insta
 ==> Error: The spec 'cmake' is configured as not buildable, and no matching external installs were found
 ```
 
-When we specify dependency like `depends_on('cmake', type='build')`, Spack will match any cmake version available. But many packages specify version constraints in the dependency like `depends_on('cmake@2.8.12:', type='build')`. This indicate that `CMake` version should be  `>=2.8.12`. To satisfy this constraint you have to make sure to provide appropriate version. Otherwise you can remove `buildable: False` option.
+When we specify dependency like `depends_on('cmake', type='build')`, Spack will match any CMake version available. But many packages specify version constraints in the dependency like `depends_on('cmake@2.8.12:', type='build')`. This indicates that `CMake` version should be  `>=2.8.12`. To satisfy this constraint you have to make sure to provide appropriate version. Otherwise you can remove `buildable: False` option.
 
 We can provide preferences for all packages in `packages.yaml`. For example, in the below configuration we specified compiler preferences for building any package. Also, we specify `mpich` as `MPI` provider.
 
@@ -480,7 +479,7 @@ mod2c@develop%clang@8.1.0-apple arch=darwin-sierra-x86_64
     ^cmake@3.8.2%clang@8.1.0-apple~doc+ncurses+openssl+ownlibs~qt arch=darwin-sierra-x86_64
 ```
 
-The `Concretized ` section gives final dependency list. Before actual installing package, we can use `-I` option to see which components are already installed :
+The `Concretized ` section gives final dependency list. Before actual installing package, we can use `-I` option to see which components are already installed:
 
 ```bash
 $spack spec -I petsc
