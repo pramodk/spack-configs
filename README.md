@@ -55,11 +55,10 @@ In order to access spack shell support, add following in your `.bashrc` (linux) 
 
 ```bash
 export SPACK_ROOT=$HOME/workarena/software/sources/spack
-export PATH=$SPACK_ROOT/bin:$PATH
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
 
-We assume that the `module` command is already installed/available on the system. Check Spack documentation if this is not the case.
+We assume that [Environment Modules](http://modules.sourceforge.net/) is properly installed and `module` command is available on the `PATH` environment variable. Check [Spack documentation](https://spack.readthedocs.io/en/latest/getting_started.html#installenvironmentmodules) if this is not the case.
 
 ## Platform Specific Configuration ##
 
