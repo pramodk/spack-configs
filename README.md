@@ -449,10 +449,10 @@ builtin    /Users/kumbhar/workarena/software/sources/spack/var/spack/repos/built
 Now you can list available packages using `spack list` command:
 
 ```bash
-$ spack list *neuron*
+$ spack list neuron
 
-==> 3 packages.
-coreneuron  neuron  neuron-nmodl
+==> 4 packages.
+coreneuron  neuron  neuron-nmodl neuronperfmodels
 
 $ spack list mod2c
 
@@ -549,11 +549,11 @@ You can find installed packages using `spack find` as:
 ```bash
 $ spack find mod2c
 
-==> 3 installed packages.
--- darwin-elcapitan-x86_64 / clang@7.3.0-apple ------------------
-mod2c@github
--- darwin-elcapitan-x86_64 / gcc@4.9.3 --------------------------
-mod2c@github  mod2c@develop
+==> 2 installed packages.
+-- darwin-sierra-x86_64 / clang@8.1.0-apple ------------------
+mod2c@develop
+-- darwin-sierra-x86_64 / gcc@7.2.0 --------------------------
+mod2c@develop
 ```
 
 You can now install required packages one by one or write some script to install packages with different combinations. Here example of installing all stack with `Clang` and `GNU` compiler:
@@ -604,7 +604,6 @@ do
         spack install $package $compiler
     done
 done
-
 ```
 
 
