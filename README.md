@@ -88,7 +88,7 @@ $ spack arch
 linux-rhel6-x86_64
 ```
 
->> Note that `darwin` is platform name and it could be `linux`, `bgq`, `cray` etc. depending on the system you have.
+> Note that `darwin` is platform name and it could be `linux`, `bgq`, `cray` etc. depending on the system you have.
 
 
 ## Platform Specific Configuration ##
@@ -156,7 +156,7 @@ The provided configurations in [spack-configs](https://github.com/pramodskumbhar
 
 In order to understand the complete workflow, we will go through step-by-step tutorial for OS X and Linux cluster platform. Once you are familiar with this workflow, you can use same workflow for any platform.
 
-#### Mac OS X ###
+### Bootstrapping Spack on Mac OS X ###
 
 As discussed earlier, we can build entire software stack including `CMake`, `GCC`, `LLVM`, `MPI` (`MPICH` or `OpenMPI`) with Spack on our laptop. But for the development purpose, most of the time, we don't want to build these packages from source as they take long time to build (my poor MacBook from 2011!). In this case it is good idea to use `Homebrew` or `Macport` to install these packages.
 
@@ -241,7 +241,7 @@ brew install qt55
 
 Lets start with Spack now!
 
-#### Compiler Configuration ####
+##### Compiler Configuration #####
 
 First step with Spack is to find compilers available on system. We can do this with following command:
 
@@ -340,7 +340,7 @@ spack compiler find /usr/local/Cellar/llvm/3.9.0/
 ```
 
 
-#### Package Configuration ####
+##### Package Configuration #####
 
 Second important step is to tell spack about `existing` packages. Spack can build most of the environment for you but we want to use packages like `MPI`, `CMake`, `autotools` etc. provided by the system. This is more important on HPC facilities where packages like `MPI` are tuned for hardware and provided by supercomputing center/vendors. We don't want to install those ourselves from source. This is where `packages.yaml` file in `$HOME/.spack/darwin/` comes into action (`darwin` here is platform name). The `packages.yaml` tells spack which existing packages to use, their versions, compiler preferences etc. For example, if you try to build package which need `CMake`, Spack will try to build `CMake` and all its dependencies from source. But we have previously installed `CMake` with `brew` and we can tell spack to use it using below `packages.yaml`:
 
@@ -572,7 +572,7 @@ With above configuration we tell Spack to find various packages under `/usr/loca
 	Spack packages are being developed by system engineers, package developers, domain scientists and others. Not every package is tested for every possible compiler version and OS distribution. Some packages can't be build on specific platform or specific compilers (e.g. Cray or Pathscale compiler?). Such packages are being improved so that the [conflicts](http://spack.readthedocs.io/en/latest/packaging_guide.html#conflicts) are being added. And hence sometime you have to check some more details about compatibility / build failure.
 
 
-#### Spack in Action: Installing Packages ####
+##### Spack in Action: Installing Packages #####
 
 In the previous section we saw how to setup external packages in `packages.yaml` and compilers in `compilers.yaml`. Now we are ready to install packages!
 
@@ -730,7 +730,7 @@ There are lot of useful commands and here are some useful once:
 * `spack compiler find` : find new compilers in $PATH
 * `spack config get packages` : show configurations for packages (i.e. `packages.yaml`)
 
-#### Generating Modules ####
+##### Generating Modules #####
 
 In the previous section we saw how to install different softwares. Spack provides `load` command to easily load packages. For example, you can say:
 
@@ -852,7 +852,6 @@ modules:
 
     all:
       suffixes:
-          '^openmpi': 'openmpi'
           '^python': 'python'
 
       environment:
@@ -871,8 +870,10 @@ modules:
           OMPI_MCA_BTL_OPENIB_WARN_DEFAULT_GID_PREFIX: '0'
 ```
 
-The configuration file is similar to tcl modules except `core_compilers`. The generated module hierarchy always contains the three layers `Core` / `Compiler` / `MPI` but can be further extended to any other virtual dependency present in Spack.
-Here we take gcc v4.4 as core compiler which has built clang and gcc 4.9.4. 
+The configuration file is similar to tcl modules except:
+
+* `core_compilers`: the generated module hierarchy always contains the three layers `Core` / `Compiler` / `MPI` and here we using gcc v4.4 as core compiler which has built clang and gcc 4.9.4
+*  suffixes : we have now removed openmpi suffix because MPI is part of Lmod hierarchy (and hence modules name will be distinguised by hierarchy itself)
 
 Make sure to activate support for LMod using following lines in `.bashrc` or `.bash_profile`:
 
@@ -930,7 +931,9 @@ Now we can load neuron and neurodamus modules and check the output of `module av
 
 As our `modules.yaml` has `autoload: 'direct'`, all the direct dependencies of package are autoloaded (i.e. neurodamus has dependency with neuron, reportinglib and python).
 
-But, what is the advantage of going through extra complicated multi-step process? Well, suppose now you want to load modules build by gcc compiler or another mpi for different cluster partition (e.g. KNL or Power8), if you just switch mpi or compiler, Lmod will automatically detect it and will reload everything consistent for you! Lets swap llvm compiler by gcc :
+But, what is the advantage of going through extra complicated multi-step process?
+
+Well, suppose now we want to load modules build by gcc compiler or another mpi version necessary for different cluster partition (e.g. KNL or Power8 or nodes withg inifiniband network). Typically we will do `module purge` and start over again! And that's when Lmod make workflow simpler. If we just switch mpi or compiler, Lmod will automatically detect the changes in the dependency and will reload everything consistent! Lets swap llvm compiler by gcc :
 
 ![spack lmod av](.images/lmod_llvm_swap_gcc.png) 
 
@@ -938,14 +941,16 @@ As indicated by message *"Due to MODULEPATH changes, the following have been rel
 
 ![spack lmod av](.images/lmod_llvm_swap_gcc_avail.png) 
 
-The same will be the case if you switch mpi module. Lmod offers rich functionality to make entire workflow easy. You can find more information [here](http://lmod.readthedocs.io/en/latest/).
+The same will be the case if we have different mpi and switch to that. Lmod offers rich functionality to make entire workflow easy. You can find more information [here](http://lmod.readthedocs.io/en/latest/).
 
 
-#### Lugano Vizcluster ###
+### Bootstrapping Spack on BBP IV Lugano VizCluster ###
 
-All above instructions for OS X platform will be useful to setup development environment on Lugano Vizcluster, read those first. We list few important exceptions that must be considered:
+> TODO : Similar to OS X, we will be adding ste-by-step instructions to bootstrap Spack
 
-* On HPC cluster system like `Lugano Vizcluster`, we don't want to / should not install compilers, MPI libraries etc.
+All above instructions for OS X will be useful to setup development environment on Lugano Vizcluster, read those first. We list few important exceptions that must be considered:
+
+* On HPC cluster system like `Lugano Vizcluster`, we don't want to / shouldn't install compilers, MPI libraries etc.
 * We should use existing modules as much as possible.
 * Spack discourage use of `LD_LIBRARY_PATH` from user space. Many existing modules on HPC systems set `LD_LIBRARY_PATH`. In order to use these modules, we have to use `--dirty` flag during installation (related issue has been reported upstream).
 * All `MPI` packages are externally installed. The actual libraries are `mvapich2`, `mpich3`, `intelmpi` etc. Many times we have to specify these `MPI` libraries explicitly on command line with `install` or `spec` command like `spack spec neuron +mpi ^mvapich2` otherwise we get `list out of index` error. (this is likely a bug and has been reported upstream).
