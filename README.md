@@ -26,7 +26,7 @@ SOURCE_HOME_DIR=$HOME/workarena/software/sources
 
 
 #### Clone Repository ####
-Clone spack repository from GitHub. You can use [official repository](https://github.com/LLNL/spack) from LLNL. But I use fork as I am adding few modifications / workarounds for existing bugs that I have encountered on some systems like BBP IV BG-Q, OS X.
+Clone spack repository from GitHub. You can use [official repository](https://github.com/LLNL/spack) from LLNL. But we use fork here as few modifications / workarounds (for existing bugs on some systems like BBP IV BG-Q, OS X) have been added.
 
 ```bash
 cd $SOURCE_HOME_DIR
@@ -41,7 +41,7 @@ git fetch llnl
 ```
 
 #### Update .bashrc or .bash_profile ####
-In order to access spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X): 
+In order to access spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X):
 
 ```bash
 export SPACK_ROOT=$HOME/workarena/software/sources/spack
@@ -54,7 +54,7 @@ Make sure to `source` your `.bashrc` or `.bash_profile` whenever you update it.
 
 #### Additional Packages ####
 
-I started creating new packages for some of the software components (from BBP) in a separate repository (e.g. NEURON, CoreNEURON, ReportingLib, Neurodamus). In order to build those packages with Spack, add bellow GitHub repository as a Spack repository:
+We have new packages for some of the software components (from BBP) in a separate repository (e.g. NEURON, CoreNEURON, ReportingLib, Neurodamus, NEST). In order to build those packages with Spack, add bellow GitHub repository as a Spack package repository:
 
 ```bash
 cd $SOURCE_HOME_DIR
@@ -95,7 +95,7 @@ linux-rhel6-x86_64
 
 Once you setup Spack, you can start installing entire software stack including compilers, libraries, MPI etc. But as an end user of computing systems, we typically have pre-installed software stack like compilers, MPI, scientific libraries, build tools etc. One of the most useful feature of Spack is ability to integrate with exisiting softwares with ease. For example, if you start your development on desktop or Lugano vizcluster, do you want to install `GCC`, `LLVM` compilers, flex, bison, Python, CMake, autoconf etc. from source yourself? Or, do you want to use `apt`, `brew` or pre-installed sofwtares, modules?
 
-If you haven't installed such softwares from source, here are examples of dependencies shown by 
+If you haven't installed such softwares from source, here are examples of dependencies shown by
 
 `$ spack spec hdf5` :
 
@@ -109,7 +109,7 @@ The hierarchical output shows that the `hdf5` package depends on `openmpi` (for 
 
 Some users might want to install everything from scratch (e.g. system engineers or developer needing latest `trunk` of LLVM!). But often we want to use existing softwares as much as possible and then concentrate on our own softwrae stack and dependencies.
 
-As a user of BBP-IV Lugano VizCluster, Lugano BG-Q, MIRA BG-Q, Theta (Cray KNL), JUROAN (Cray KNL), JULIA (IBM Power 8), Piz Daint (Cray X86_64 + GPU) systems, I have created configurations of exisiting softwares that can be used with Spack. The configurations are present in [spack-configs](https://github.com/pramodskumbhar/spack-configs) repository on GitHub and you can clone that locally:
+As a user of BBP-IV Lugano VizCluster, Lugano BG-Q, MIRA BG-Q, Theta (Cray KNL), JUROAN (Cray KNL), JULIA (IBM Power 8), Piz Daint (Cray X86_64 + GPU) systems, we have created configurations of exisiting softwares that can be used with Spack. The configurations are present in [spack-configs](https://github.com/pramodskumbhar/spack-configs) repository on GitHub and you can clone that locally:
 
 ```bash
 cd $SOURCE_HOME_DIR
@@ -152,7 +152,7 @@ source $SPACK_ROOT/share/spack/setup-env.sh
 
 If you don't have `config.yaml` file then Spack will install softwraes in `$SPACK_ROOT/opt/spack/linux-arch-xxx/gcc-xxx` (platform, architecture and compiler names will be different). More detailed information about Spack configuration files is [here](http://spack.readthedocs.io/en/latest/configuration.html).
 
-The provided configurations in [spack-configs](https://github.com/pramodskumbhar/spack-configs) are for specific system that we are using. But how to create such configuratios? What if I am going to build software stack on completely new Power-X supercomputer?
+The provided configurations in [spack-configs](https://github.com/pramodskumbhar/spack-configs) are for specific system that we are using. But how to create such configuratios? What if we want to build software stack on completely new Power-X supercomputer?
 
 In order to understand the complete workflow, we will go through step-by-step tutorial for OS X and Linux cluster platform. Once you are familiar with this workflow, you can use same workflow for any platform.
 
@@ -496,7 +496,7 @@ packages:
         paths:
             boost@1.55.0%clang@8.1.0-apple: /usr/local
         version: [1.55.0]
-        
+
     gcc:
         paths:
             gcc@4.9.4%gcc@4.4: /usr/local
@@ -522,11 +522,11 @@ With above configuration we tell Spack to find various packages under `/usr/loca
 * Why some packages are specified as `autoconf@system`?
 
 	Older version of Spack allowed to specify version as `system`. This meant software specified is system installed and hence use it without checking version requirements (A way to say "don't worry, just use it!"). This practice is discouraged now and we should specify exact version number in `packages.yaml` to avoid incompatible version issues. When packages specify strict version requirements then often you have to provide version specification instead of just `@system`.
-	
+
 * Why some packages are specified with compiler specification and without `buildable: False`?
 
 	Consider boost specification:
-	
+
 	```
 	    boost:
         paths:
@@ -535,7 +535,7 @@ With above configuration we tell Spack to find various packages under `/usr/loca
 	```
 
 	When we install boost using `brew`, the installed boost libraries can not be linked with gcc compiled application. In this case we want to use pre-installed boost if we are compiling application with clang. But if are building with gcc then we want Spack to allow to build Boost from source and hence we don't specify `buildable: False`.
-	
+
 * Why have we specified `gcc` / `llvm` compilers as built by gcc version 4.4?
 
 	The answer will be more clear when we will go through `Generating Modules` section : when we generate modules using [LMOD](https://www.tacc.utexas.edu/research-development/tacc-projects/lmod) we have to specify one core compiler and then sub-compilers for building module hierarchy. As we have installed compilers from binary (`brew`), we specify that these compilers are built by some compiler `gcc v4.4`. And then in LMOD specification we can use  `gcc v4.9.4` and `clang v8.1.0` in module hierarchy.
@@ -543,30 +543,30 @@ With above configuration we tell Spack to find various packages under `/usr/loca
 * I have different versions of compilers, libraries, mpi and other packages. What should I do?
 
 	You can use `packages.yaml` as template and add/delete new packages as per your requirements. You can update versions, compiler preferences etc.
-	
+
 * I created `packages.yaml` but getring "Error: Error parsing yaml in ...xxx...". Even worse just "Error". What to do?
 
 	Spack configuration files are [YAML](http://www.yaml.org/start.html) specifications. If you have not used proper indentation or mixed spaces/tabs then we get parsing errors. Sometime we don't get clear message from Spack and difficult to trace the error. In this you can use `--debug` or `-d` option to spack command to provide detailed trace:
-	
+
 	```
 	spack -d spec hdf5
 	```
-	
+
 * Can I tell spack to build specific package with only one compiler in `packages.yaml`?
 
 	It would be convenient to specify something like below in `packages.py`
-	
+
 	```
     boost:
         compiler: gcc@4.4
 	```
-	
+
 	This is to force using specific compiler `gcc 4.4` whenever we build boost (to avoid multiple installations). But this feature is still not implemented. To achieve this today, we have to explicitly specify constraint on command line:
-	
+
 	```
 	spack install packageA %clang ^boost %gcc@4.4
 	```
-	
+
 * I am trying to build packageX but this is failing with my favourite compiler version XX and OS YY. Why?
 
 	Spack packages are being developed by system engineers, package developers, domain scientists and others. Not every package is tested for every possible compiler version and OS distribution. Some packages can't be build on specific platform or specific compilers (e.g. Cray or Pathscale compiler?). Such packages are being improved so that the [conflicts](http://spack.readthedocs.io/en/latest/packaging_guide.html#conflicts) are being added. And hence sometime you have to check some more details about compatibility / build failure.
@@ -782,12 +782,12 @@ modules:
           '${PACKAGE}_ROOT': '${PREFIX}'
       filter:
         environment_blacklist: ['CPATH', 'LIBRARY_PATH']
-        
+
     hash_length: 0
     naming_scheme: '${PACKAGE}/${VERSION}-${COMPILERNAME}'
-    
+
     blacklist: ['cmake', 'hdf5', 'zlib', 'autoconf', 'libtool', 'pkg-config', 'automake', '%gcc@4.4', 'mod2c', '-compile']
-    
+
     openmpi:
       environment:
         set:
@@ -894,7 +894,7 @@ $ spack install llvm
 ==> llvm@8.1.0-apple : externally installed in /usr/local
 ==> llvm@8.1.0-apple : generating module file
 ==> llvm@8.1.0-apple : registering into DB
-``` 
+```
 
 With the updated `modules.yaml` for LMod, we can re-generate `lmod` modules using `module refresh` command as:
 
@@ -935,11 +935,11 @@ But, what is the advantage of going through extra complicated multi-step process
 
 Well, suppose now we want to load modules build by gcc compiler or another mpi version necessary for different cluster partition (e.g. KNL or Power8 or nodes withg inifiniband network). Typically we will do `module purge` and start over again! And that's when Lmod make workflow simpler. If we just switch mpi or compiler, Lmod will automatically detect the changes in the dependency and will reload everything consistent! Lets swap llvm compiler by gcc :
 
-![spack lmod av](.images/lmod_llvm_swap_gcc.png) 
+![spack lmod av](.images/lmod_llvm_swap_gcc.png)
 
 As indicated by message *"Due to MODULEPATH changes, the following have been reloaded"*, the modules compiled by llvm are now replaced by gcc compiled ones. If we see output of `module avail` it's clear that the loaded modules are from gcc subtree:
 
-![spack lmod av](.images/lmod_llvm_swap_gcc_avail.png) 
+![spack lmod av](.images/lmod_llvm_swap_gcc_avail.png)
 
 The same will be the case if we have different mpi and switch to that. Lmod offers rich functionality to make entire workflow easy. You can find more information [here](http://lmod.readthedocs.io/en/latest/).
 
