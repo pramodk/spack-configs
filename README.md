@@ -21,7 +21,7 @@ These steps are independent of platform i.e. if you want start from scratch or b
 We will use following prefix throughout the scripts. Set those according to your convenience:
 
 ```bash
-SOURCE_HOME_DIR=$HOME/software/sources
+SOURCE_HOME_DIR=$HOME/workarena/software/sources
 ```
 
 
@@ -44,7 +44,7 @@ git fetch llnl
 In order to access spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X): 
 
 ```bash
-export SPACK_ROOT=$HOME/software/sources/spack
+export SPACK_ROOT=$HOME/workarena/software/sources/spack
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
 
