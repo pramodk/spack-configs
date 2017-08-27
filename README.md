@@ -41,7 +41,7 @@ git fetch llnl
 ```
 
 #### Update .bashrc or .bash_profile ####
-In order to access spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X):
+In order to access spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X): 
 
 ```bash
 export SPACK_ROOT=$HOME/software/sources/spack
@@ -66,8 +66,8 @@ You can check the existing repositories using below command:
 ```
 $ spack repo list
 ==> 2 package repositories.
-bbp        /Users/kumbhar/software/sources/spack-packages
-builtin    /Users/kumbhar/software/sources/spack/var/spack/repos/builtin
+bbp        /Users/kumbhar/workarena/software/sources/spack-packages
+builtin    /Users/kumbhar/workarena/software/sources/spack/var/spack/repos/builtin
 ```
 
 Note that the `builtin` repository contains all packages provided Spack. The `bbp` repository is the one that we just added.
@@ -95,7 +95,7 @@ linux-rhel6-x86_64
 
 Once you setup Spack, you can start installing entire software stack including compilers, libraries, MPI etc. But as an end user of computing systems, we typically have pre-installed software stack like compilers, MPI, scientific libraries, build tools etc. One of the most useful feature of Spack is ability to integrate with exisiting softwares with ease. For example, if you start your development on desktop or Lugano vizcluster, do you want to install `GCC`, `LLVM` compilers, flex, bison, Python, CMake, autoconf etc. from source yourself? Or, do you want to use `apt`, `brew` or pre-installed sofwtares, modules?
 
-If you haven't installed such softwares from source, here are examples of dependencies shown by
+If you haven't installed such softwares from source, here are examples of dependencies shown by 
 
 `$ spack spec hdf5` :
 
@@ -290,7 +290,7 @@ compilers:
     target: x86_64
 ```
 
-Or, if your don't have Xcode installed or different compiler versions then Clang compiler section might look different:
+Or, if your don't have Xcode installed or have different compiler versions then Clang compiler section might look different:
 
 ```
 - compiler:
@@ -496,7 +496,7 @@ packages:
         paths:
             boost@1.55.0%clang@8.1.0-apple: /usr/local
         version: [1.55.0]
-
+        
     gcc:
         paths:
             gcc@4.9.4%gcc@4.4: /usr/local
@@ -521,55 +521,55 @@ With above configuration we tell Spack to find various packages under `/usr/loca
 
 * Why some packages are specified as `autoconf@system`?
 
-    Older version of Spack allowed to specify version as `system`. This meant software specified is system installed and hence use it without checking version requirements (A way to say "don't worry, just use it!"). This practice is discouraged now and we should specify exact version number in `packages.yaml` to avoid incompatible version issues. When packages specify strict version requirements then often you have to provide version specification instead of just `@system`.
-
+	Older version of Spack allowed to specify version as `system`. This meant software specified is system installed and hence use it without checking version requirements (A way to say "don't worry, just use it!"). This practice is discouraged now and we should specify exact version number in `packages.yaml` to avoid incompatible version issues. When packages specify strict version requirements then often you have to provide version specification instead of just `@system`.
+	
 * Why some packages are specified with compiler specification and without `buildable: False`?
 
-    Consider boost specification:
-
-    ```
-        boost:
+	Consider boost specification:
+	
+	```
+	    boost:
         paths:
             boost@1.55.0%clang@8.1.0-apple: /usr/local
         version: [1.55.0]
-    ```
+	```
 
-    When we install boost using `brew`, the installed boost libraries can not be linked with gcc compiled application. In this case we want to use pre-installed boost if we are compiling application with clang. But if are building with gcc then we want Spack to allow to build Boost from source and hence we don't specify `buildable: False`.
-
+	When we install boost using `brew`, the installed boost libraries can not be linked with gcc compiled application. In this case we want to use pre-installed boost if we are compiling application with clang. But if are building with gcc then we want Spack to allow to build Boost from source and hence we don't specify `buildable: False`.
+	
 * Why have we specified `gcc` / `llvm` compilers as built by gcc version 4.4?
 
-    The answer will be more clear when we will go through `Generating Modules` section : when we generate modules using [LMOD](https://www.tacc.utexas.edu/research-development/tacc-projects/lmod) we have to specify one core compiler and then sub-compilers for building module hierarchy. As we have installed compilers from binary (`brew`), we specify that these compilers are built by some compiler `gcc v4.4`. And then in LMOD specification we can use  `gcc v4.9.4` and `clang v8.1.0` in module hierarchy.
+	The answer will be more clear when we will go through `Generating Modules` section : when we generate modules using [LMOD](https://www.tacc.utexas.edu/research-development/tacc-projects/lmod) we have to specify one core compiler and then sub-compilers for building module hierarchy. As we have installed compilers from binary (`brew`), we specify that these compilers are built by some compiler `gcc v4.4`. And then in LMOD specification we can use  `gcc v4.9.4` and `clang v8.1.0` in module hierarchy.
 
 * I have different versions of compilers, libraries, mpi and other packages. What should I do?
 
-    You can use `packages.yaml` as template and add/delete new packages as per your requirements. You can update versions, compiler preferences etc.
-
+	You can use `packages.yaml` as template and add/delete new packages as per your requirements. You can update versions, compiler preferences etc.
+	
 * I created `packages.yaml` but getring "Error: Error parsing yaml in ...xxx...". Even worse just "Error". What to do?
 
-    Spack configuration files are [YAML](http://www.yaml.org/start.html) specifications. If you have not used proper indentation or mixed spaces/tabs then we get parsing errors. Sometime we don't get clear message from Spack and difficult to trace the error. In this you can use `--debug` or `-d` option to spack command to provide detailed trace:
-
-    ```
-    spack -d spec hdf5
-    ```
-
+	Spack configuration files are [YAML](http://www.yaml.org/start.html) specifications. If you have not used proper indentation or mixed spaces/tabs then we get parsing errors. Sometime we don't get clear message from Spack and difficult to trace the error. In this you can use `--debug` or `-d` option to spack command to provide detailed trace:
+	
+	```
+	spack -d spec hdf5
+	```
+	
 * Can I tell spack to build specific package with only one compiler in `packages.yaml`?
 
-    It would be convenient to specify something like below in `packages.py`
-
-    ```
+	It would be convenient to specify something like below in `packages.py`
+	
+	```
     boost:
         compiler: gcc@4.4
-    ```
-
-    This is to force using specific compiler `gcc 4.4` whenever we build boost (to avoid multiple installations). But this feature is still not implemented. To achieve this today, we have to explicitly specify constraint on command line:
-
-    ```
-    spack install packageA %clang ^boost %gcc@4.4
-    ```
-
+	```
+	
+	This is to force using specific compiler `gcc 4.4` whenever we build boost (to avoid multiple installations). But this feature is still not implemented. To achieve this today, we have to explicitly specify constraint on command line:
+	
+	```
+	spack install packageA %clang ^boost %gcc@4.4
+	```
+	
 * I am trying to build packageX but this is failing with my favourite compiler version XX and OS YY. Why?
 
-    Spack packages are being developed by system engineers, package developers, domain scientists and others. Not every package is tested for every possible compiler version and OS distribution. Some packages can't be build on specific platform or specific compilers (e.g. Cray or Pathscale compiler?). Such packages are being improved so that the [conflicts](http://spack.readthedocs.io/en/latest/packaging_guide.html#conflicts) are being added. And hence sometime you have to check some more details about compatibility / build failure.
+	Spack packages are being developed by system engineers, package developers, domain scientists and others. Not every package is tested for every possible compiler version and OS distribution. Some packages can't be build on specific platform or specific compilers (e.g. Cray or Pathscale compiler?). Such packages are being improved so that the [conflicts](http://spack.readthedocs.io/en/latest/packaging_guide.html#conflicts) are being added. And hence sometime you have to check some more details about compatibility / build failure.
 
 
 #### Spack in Action: Installing Packages ####
@@ -645,8 +645,8 @@ We have added `spack-packages` repository in the beginning. You can see which pa
 $ spack repo list
 
 2 package repositories.
-spack-packages        /Users/kumbhar/software/sources/spack-packages
-builtin    /Users/kumbhar/software/sources/spack/var/spack/repos/builtin
+spack-packages        /Users/kumbhar/workarena/software/sources/spack-packages
+builtin    /Users/kumbhar/workarena/software/sources/spack/var/spack/repos/builtin
 ```
 
 We can see the dependencies of `NEURON` package with `spack spec` command change compiler using `%` symbol followed by compiler name as:
@@ -704,7 +704,7 @@ set -e
 # for every compiler
 for compiler in "${compilers[@]}"
 do
-     # build each package
+	 # build each package
     for package in "${dev_packages[@]}"
     do
         spack install $package $compiler
@@ -749,17 +749,14 @@ Those are modules for all software that we have installed so far! If you look at
 * lot of redundent modules for end users : why they need autoconf, automake module?
 * hash in module name is not useful for end-users (module names will change once version / dependency changes)
 
-And that's where Spack support for modules come handy! Details information is [here](http://spack.readthedocs.io/en/latest/module_file_support.html#).
+These autogenerated modules are difficult to use for end users and that's where Spack support for modules comes handy! Details information is [here](http://spack.readthedocs.io/en/latest/module_file_support.html#).
 Below instructions provide quick instructions for generating module on OS X.
 
-We will look into `Environment Modules` as well as `LMod`. As discussed in `OS X` section, make sure you have `module` and `lmod` installed via brew. Your `.bashrc` or `.bash_profile` should activate the support as:
+We will look into `Environment Modules` as well as `LMod`. As discussed in `OS X` section, make sure you have `module` and `lmod` installed via brew. Your `.bashrc` or `.bash_profile` should activate the support for modules as:
 
 ```
 MODULES_HOME=`brew --prefix modules`
 source ${MODULES_HOME}/Modules/init/bash
-
-LMOD_HOME=`brew --prefix lmod`
-source $LMOD_HOME/lmod/init/bash
 ```
 
 > brew install `lmod`/ `modules` under `/usr/local/opt/`
@@ -785,13 +782,12 @@ modules:
           '${PACKAGE}_ROOT': '${PREFIX}'
       filter:
         environment_blacklist: ['CPATH', 'LIBRARY_PATH']
-
+        
     hash_length: 0
-
     naming_scheme: '${PACKAGE}/${VERSION}-${COMPILERNAME}'
-
-    blacklist: ['cmake', 'hdf5', 'zlib', 'autoconf', 'libtool', 'pkg-config', 'automake', '%gcc@4.4', 'mod2c']
-
+    
+    blacklist: ['cmake', 'hdf5', 'zlib', 'autoconf', 'libtool', 'pkg-config', 'automake', '%gcc@4.4', 'mod2c', '-compile']
+    
     openmpi:
       environment:
         set:
@@ -807,9 +803,9 @@ Here is brief explanation of the above modules configuration:
 * if someone try to load same module name twice (e.g. hdf5/gcc and hdf5/icc) then there is conflict (here conflict scheme is package name)
 * generated module file will have `PACKAGENAME_ROOT` environmental variable defined pointing to installation prefix
 * filter (i.e. remove) CPATH and LIBRARY_PATH environmet variables from generated module
-* don't append hash to the module name (NOTE: you have to make sure your naming_scheme is reasonable so that there is no conflict)
+* don't append hash to the module name (NOTE: you have to make sure your naming_scheme is reasonable so that there is no conflict in name generation of modules)
 * naming scheme of modules is : package name + version + '-' + compiler name
-* don't generate modules for packages provided in `blacklist`
+* don't generate modules for packages or variants provided in the `blacklist`
 * for openmpi package set specified environment variables
 
 With the above `$HOME/.spack/darwin/modules.yaml` file we are ready to regenrate using `module refresh` command:
@@ -836,7 +832,7 @@ neurodamus/develop-clang-python-openmpi(36):ERROR:150: Module 'neurodamus/develo
 neurodamus/develop-clang-python-openmpi(36):ERROR:102: Tcl command execution failed: conflict neurodamus
 ```
 
-` Environment Modules` is sufficient for basic use but there are many limitations. `LMod` is becoming more popular and you can find more information [here](http://lmod.readthedocs.io/en/latest/).
+` Environment Modules` is sufficient for basic use but there are number of limitations. `LMod` has lot of improvements over modules and being used on large computing systems. You can find more information [here](http://lmod.readthedocs.io/en/latest/). When lmod is activated Spack will generate a set of hierarchical lua module files that are understood by LMod.
 
 In order to use `lmod` we have to update `$HOME/.spack/darwin/modules.yaml` as:
 
@@ -852,8 +848,7 @@ modules:
       - 'gcc@4.4'
 
     hash_length: 0
-
-    blacklist: ['cmake', 'hdf5', 'zlib', 'autoconf', 'libtool', 'pkg-config', 'automake', '%gcc@4.4', 'mod2c']
+    blacklist: ['cmake', 'hdf5', 'zlib', 'autoconf', 'libtool', 'pkg-config', 'automake', 'mod2c', '-compile']
 
     all:
       suffixes:
@@ -876,128 +871,74 @@ modules:
           OMPI_MCA_BTL_OPENIB_WARN_DEFAULT_GID_PREFIX: '0'
 ```
 
-The configuration file is similar to tcl modules except `core_compilers`. Here we take gcc v4.4 as core compiler.
+The configuration file is similar to tcl modules except `core_compilers`. The generated module hierarchy always contains the three layers `Core` / `Compiler` / `MPI` but can be further extended to any other virtual dependency present in Spack.
+Here we take gcc v4.4 as core compiler which has built clang and gcc 4.9.4. 
 
-Assuming we have proper `modules.yaml`, we can generate `lmod` modules with Spack as:
+Make sure to activate support for LMod using following lines in `.bashrc` or `.bash_profile`:
 
 ```
-spack module refresh --delete-tree -y -m lmod
+LMOD_HOME=`brew --prefix lmod`
+source $LMOD_HOME/lmod/init/bash
 ```
 
-Make sure to set `MODULEPATH` to the `Core` directory:
+We have installed `gcc 4.9.4` and `llvm 8.1.0` compilers via brew. The `packages.yaml` has external package specification and hence we have to register them into the database prior to generating Lmod modules:
+
+```
+$ spack install gcc
+==> gcc@4.9.4 : externally installed in /usr/local
+==> gcc@4.9.4 : generating module file
+==> gcc@4.9.4 : registering into DB
+
+$ spack install llvm
+==> llvm@8.1.0-apple : externally installed in /usr/local
+==> llvm@8.1.0-apple : generating module file
+==> llvm@8.1.0-apple : registering into DB
+``` 
+
+With the updated `modules.yaml` for LMod, we can re-generate `lmod` modules using `module refresh` command as:
+
+```
+$ spack module refresh --delete-tree -y -m lmod
+==> Regenerating lmod module files
+```
+
+By default our `$MODULEPATH` might be pointing to tcl modules. Make sure to set `MODULEPATH` to the `Core` directory inside `share/spack/lmod/`:
 
 ```bash
-export MODULEPATH=/Users/kumbhar/software/sources/spack/share/spack/lmod/darwin-sierra-x86_64/Core/
+export MODULEPATH=/Users/kumbhar/workarena/software/sources/spack/share/spack/lmod/darwin-sierra-x86_64/Core/
 ```
 
-Now `module av` should show you packages built with core compilers:
 
-```bash
-$ module av
+> * If `Core` directory is not generated then there is issue with core compiler (either compiler specification is not correct or compilers are not registered into the database)
+> * Make sure to unset previous MODULEPATH which is pointing to the tcl modules generated (otherwise Lmod will be using Tcl modules)
 
- /Users/kumbhar/software/sources/spack/share/spack/lmod/darwin-sierra-x86_64/Core
-   gcc/4.9.4    llvm/8.1.0-apple (L)
+Now lets see what `module avail` is showing:
 
-  Where:
-   L:  Module is loaded
-```
+![spack lmod av](.images/lmod_av.png)
 
-Loading one of the compiler will show the modules built with that compiler:
+We only see compilers because we are in hierarchical modules world! As mentioned earlier, the default hierarchy is `compilers` -> `mpi` -> `packages`. So if we now load `llvm` compiler and see available modules in the next hierarchy:
 
-```
-$ module av
+![spack lmod av](.images/lmod_llvm_load_av.png)
 
- /Users/kumbhar/software/sources/spack/share/spack/lmod/darwin-sierra-x86_64/gcc/4.9.4
-   mod2c/develop    neurodamus/develop             python/2.7.10
-   mpich/3.2        neuronperfmodels/coreneuron
+As second hiearchy is MPI, all modules compiled with MPI as hidden in the next hierarchy. This is useful when we don't to mix modules compiled with two different MPIs for two different network fabrics. Note that the Python is shown in 2nd hierarchy itself because it is not dependent on MPI. After loading OpenMPI module, the `module avail` looks like below:
 
- /Users/kumbhar/software/sources/spack/share/spack/lmod/darwin-sierra-x86_64/Core
-   gcc/4.9.4 (L)    llvm/8.1.0-apple
+![spack lmod av](.images/lmod_llvm_load_openmpi_av.png)
 
-  Where:
-   L:  Module is loaded
-```
+Now we can load neuron and neurodamus modules and check the output of `module avail`:
 
-And loading `mpich` will show modules compiled with MPI:
+![spack lmod av](.images/lmod_llvm_load_openmpi_neurodamus_av.png)
 
-```
-$ module load mpich/3.2
+As our `modules.yaml` has `autoload: 'direct'`, all the direct dependencies of package are autoloaded (i.e. neurodamus has dependency with neuron, reportinglib and python).
 
-$ module av
+But, what is the advantage of going through extra complicated multi-step process? Well, suppose now you want to load modules build by gcc compiler or another mpi for different cluster partition (e.g. KNL or Power8), if you just switch mpi or compiler, Lmod will automatically detect it and will reload everything consistent for you! Lets swap llvm compiler by gcc :
 
- /Users/kumbhar/software/sources/spack/share/spack/lmod/darwin-sierra-x86_64/mpich/3.2-xboj7as/gcc/4.9.4
-   coreneuron/perfmodels-profile          neuronperfmodels/neuron      (D)
-   coreneuron/perfmodels           (D)    reportinglib/develop-profile
-   neuron/master-profile                  reportinglib/develop         (D)
-   neuron/master                   (D)    tau/2.25.2
-   neuronperfmodels/neuron-profile
+![spack lmod av](.images/lmod_llvm_swap_gcc.png) 
 
- /Users/kumbhar/software/sources/spack/share/spack/lmod/darwin-sierra-x86_64/gcc/4.9.4
-   mod2c/develop        neurodamus/develop             python/2.7.10
-   mpich/3.2     (L)    neuronperfmodels/coreneuron
+As indicated by message *"Due to MODULEPATH changes, the following have been reloaded"*, the modules compiled by llvm are now replaced by gcc compiled ones. If we see output of `module avail` it's clear that the loaded modules are from gcc subtree:
 
- /Users/kumbhar/software/sources/spack/share/spack/lmod/darwin-sierra-x86_64/Core
-   gcc/4.9.4 (L)    llvm/8.1.0-apple
+![spack lmod av](.images/lmod_llvm_swap_gcc_avail.png) 
 
-  Where:
-   L:  Module is loaded
-   D:  Default Module
-
-```
-
-We can now load modules:
-
-```
-$ module load neurodamus/develop mod2c/develop
-$ module list
-Currently Loaded Modules:
-  1) gcc/4.9.4   2) mpich/3.2   3) neurodamus/develop   4) mod2c/develop
-```
-
-If we swap compilers then previously modules should be swapped automatically:
-
-```
-$ module swap gcc llvm
-
-Due to MODULEPATH changes, the following have been reloaded:
-  1) mod2c/develop     2) mpich/3.2     3) neurodamus/develop
-```
-
-Similarly the instructions for modules:
-
-```
-MODULES_HOME=`brew --prefix modules`
-source ${MODULES_HOME}/Modules/init/bash
-
-export MODULEPATH=/Users/kumbhar/software/sources/spack/share/spack/modules/darwin-sierra-x86_64/
-
-spack module refresh --delete-tree -y -m tcl
-```
-
-And `module av` should shows available modules:
-
-```
-$ module av
-
- /Users/kumbhar/software/sources/spack/share/spack/modules/darwin-sierra-x86_64/
- coreneuron/perfmodels-clang-mpich
- coreneuron/perfmodels-clang-mpich-profile
- coreneuron/perfmodels-gcc-mpich
- coreneuron/perfmodels-gcc-mpich-profile
- mod2c/develop-clang
- mod2c/develop-gcc
- mpich/3.2-clang
- mpich/3.2-gcc
- neurodamus/develop-clang
- neurodamus/develop-gcc
- neuron/master-clang-mpich
- neuron/master-clang-mpich-profile
- neuron/master-gcc-mpich
- neuron/master-gcc-mpich-profile
- neuronperfmodels/coreneuron-clang
- neuronperfmodels/coreneuron-gcc
- ....
-```
+The same will be the case if you switch mpi module. Lmod offers rich functionality to make entire workflow easy. You can find more information [here](http://lmod.readthedocs.io/en/latest/).
 
 
 #### Lugano Vizcluster ###
