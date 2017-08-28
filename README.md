@@ -26,7 +26,7 @@ SOURCE_HOME_DIR=$HOME/workarena/software/sources
 
 
 #### Clone Repository ####
-Clone Spack repository from GitHub. You can use [official repository](https://github.com/LLNL/spack) from LLNL. But we use fork here as few modifications / workarounds (for existing bugs on some systems like BBP IV BG-Q, OS X) have been added.
+Clone Spack repository from GitHub. We could use [official repository](https://github.com/LLNL/spack) from LLNL but few modifications (for existing bugs on some systems like BBP IV BG-Q) have been added to our fork and hence we will use following repository:
 
 ```bash
 cd $SOURCE_HOME_DIR
@@ -109,7 +109,7 @@ The hierarchical output shows that the `hdf5` package depends on `openmpi` (for 
 
 Some users might want to install everything from scratch (e.g. system engineers or developer needing latest `trunk` of LLVM!). But often we want to use existing softwares as much as possible and then concentrate on our own software stack and dependencies.
 
-As a user of BBP-IV Lugano VizCluster, Lugano BG-Q, MIRA BG-Q, Theta (Cray KNL), JUROAN (Cray KNL), JULIA (IBM Power 8), Piz Daint (Cray X86_64 + GPU) systems, we have created configurations of existing softwares that can be used with Spack. The configurations are present in [spack-configs](https://github.com/pramodskumbhar/spack-configs) repository on GitHub and you can clone that locally:
+As a user of BBP-IV Lugano VizCluster, Lugano BG-Q, MIRA BG-Q, Theta (Cray KNL), JURON (Cray KNL), JULIA (IBM Power 8), Piz Daint (Cray x86_64 + GPU) systems, we have created configurations of existing softwares that can be used with Spack. The configurations are present in [spack-configs](https://github.com/pramodskumbhar/spack-configs) repository on GitHub and you can clone that locally:
 
 ```bash
 cd $SOURCE_HOME_DIR
@@ -798,8 +798,8 @@ Here is brief explanation of the above modules configuration:
 
 * we are enabling tcl modules generation
 * if some package is dependent on openmpi then the module name of that package will have suffix `openmpi`. Same for python.
-* we want load all dependent modules automatically (e.g. if hdf5 is depend on zlib : if someone load hdf5 then load zlib module as well
-* if someone tries to load the same module name twice (e.g. hdf5/gcc and hdf5/icc) then there is conflict (here conflict scheme is package name)
+* autoload all package dependencies (e.g. as zlib is a direct dependency of hdf5, load zlib module when we load the hdf5 module)
+* if someone tries to load the same module name twice (e.g. hdf5/1.10-gcc and hdf5/1.10-icc) then there is a conflict (here conflict scheme is the name of the package i.e. hdf5)
 * generated module file will have `PACKAGENAME_ROOT` environment variable defined pointing to installation prefix
 * filter (i.e. remove) CPATH and LIBRARY_PATH environment variables from generated module
 * don't append hash to the module name (NOTE: you have to make sure your naming_scheme is reasonable so that there is no conflict in name generation of modules)
