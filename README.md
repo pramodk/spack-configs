@@ -26,7 +26,7 @@ SOURCE_HOME_DIR=$HOME/workarena/software/sources
 
 
 #### Clone Repository ####
-Clone Spack repository from GitHub. We could use [official repository](https://github.com/LLNL/spack) from LLNL but few modifications (for existing bugs on some systems like BBP IV BG-Q) have been added to our fork and hence we will use following repository:
+Clone Spack repository from GitHub. We could use [official repository](https://github.com/LLNL/spack) from LLNL but few modifications have been added to our fork (for existing bugs on some systems like BBP IV BG-Q) and hence we will use following repository:
 
 ```bash
 cd $SOURCE_HOME_DIR
@@ -717,17 +717,22 @@ The above script will build CoreNEURON, ReportingLib, Mod2c, NEURON, three diffe
 
 There are lot of useful commands and here are some useful once:
 
-* `spack find %gcc` : find packages compiled with gcc compiler
+* `spack find %gcc` : find all packages compiled with gcc compiler
 * `spack find neuron` : find all packages matching neuron as substring
-* `spack find -p` : find packages and also show path
-* `spack find -d neuron` : find neuron package and show it was build with dependency tree:
+* `spack find arch=darwin-sierra-x86_64` : find all packages compiled for specific architecture (useful in cross compiling environment)
+* `spack find -p` : find packages and also show installation path
+* `spack find -d neuron` : find neuron package and show how it was built with dependency tree:
 ![spack bbp sim stack](.images/find_neuron_dep.png)
 * `spack uninstall --all -y` : uninstall all packages and yes for confirmation
 * `spack uninstall %gcc` : uninstall gcc compiled packages
 * `spack uninstall --all --dependents -y cmake` : uninstall CMake and all packages that dependent on CMake
+* `spack uninstall --all ^python@2.7` : uninstall all packages dependent on Python 2.7
 * `spack compilers` : show compiler list
 * `spack compiler find` : find new compilers in $PATH
 * `spack config get packages` : show configurations for packages (i.e. `packages.yaml`)
+* `spack modules refresh --delete-tree` : delete existing modules and regenerate them all (see next section)
+* `spack info hdf5` : show information of hdf5 package (available versions, variants, dependencies etc.)
+* `spack checksum mpich` : check for versions of mpich package and calculate checksum for available tarballs
 
 ##### Generating Modules #####
 
