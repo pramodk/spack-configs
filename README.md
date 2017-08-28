@@ -15,7 +15,7 @@ Following instructions are divided into  `Platform Independent` and `Platform Sp
 
 ## Platform Independent Settings ##
 
-These steps are independent of platform i.e. if you want start from scratch or bootstrap from existing packages.
+These steps are independent of platform i.e. if you want to start from scratch or bootstrap from existing packages.
 
 #### Prefix ####
 We will use following prefix throughout the scripts. Set those according to your convenience:
@@ -26,7 +26,7 @@ SOURCE_HOME_DIR=$HOME/workarena/software/sources
 
 
 #### Clone Repository ####
-Clone spack repository from GitHub. You can use [official repository](https://github.com/LLNL/spack) from LLNL. But we use fork here as few modifications / workarounds (for existing bugs on some systems like BBP IV BG-Q, OS X) have been added.
+Clone Spack repository from GitHub. You can use [official repository](https://github.com/LLNL/spack) from LLNL. But we use fork here as few modifications / workarounds (for existing bugs on some systems like BBP IV BG-Q, OS X) have been added.
 
 ```bash
 cd $SOURCE_HOME_DIR
@@ -41,7 +41,7 @@ git fetch llnl
 ```
 
 #### Update .bashrc or .bash_profile ####
-In order to access spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X):
+In order to access Spack shell support, add following in your `.bashrc` (linux) or `.bash_profile` (OS X):
 
 ```bash
 export SPACK_ROOT=$HOME/workarena/software/sources/spack
@@ -70,11 +70,11 @@ bbp        /Users/kumbhar/workarena/software/sources/spack-packages
 builtin    /Users/kumbhar/workarena/software/sources/spack/var/spack/repos/builtin
 ```
 
-Note that the `builtin` repository contains all packages provided Spack. The `bbp` repository is the one that we just added.
+Note that the `builtin` repository contains all packages provided by Spack. The `bbp` repository is the one that we just added.
 
 Make sure to update / pull both repositories if there are any upstream changes.
 
-Once you follow above setup, you can execute `spack arch` command to find out which platform and architecture you are building for:
+Once you followed above setup, you can execute `spack arch` command to find out which platform and architecture you are building for:
 
 ```
 $ spack arch
@@ -88,16 +88,16 @@ $ spack arch
 linux-rhel6-x86_64
 ```
 
-> Note that `darwin` is platform name and it could be `linux`, `bgq`, `cray` etc. depending on the system you have.
+> Note that `darwin` is the platform name and it could be `linux`, `bgq`, `cray` etc. depending on the system you have.
 
 
 ## Platform Specific Configuration ##
 
-Once you setup Spack, you can start installing entire software stack including compilers, libraries, MPI etc. But as an end user of computing systems, we typically have pre-installed software stack like compilers, MPI, scientific libraries, build tools etc. One of the most useful feature of Spack is ability to integrate with existing softwares with ease. For example, if you start your development on desktop or Lugano vizcluster, do you want to install `GCC`, `LLVM` compilers, flex, bison, Python, CMake, autoconf etc. from source yourself? Or, do you want to use `apt`, `brew` or pre-installed sofwtares, modules?
+Once you setup Spack, you can start installing the entire software stack including compilers, libraries, MPI etc. But as an end user of computing systems, we typically have pre-installed software stack like compilers, MPI, scientific libraries, build tools etc. One of the most useful feature of Spack is the ability to integrate with existing softwares with ease. For example, if you start your development on desktop or Lugano vizcluster, do you want to install `GCC`, `LLVM` compilers, flex, bison, Python, CMake, autoconf etc. from source yourself? Or, do you want to use `apt`, `brew` or pre-installed softwares, modules?
 
 If you haven't installed such softwares from source, here are examples of dependencies shown by
 
-`$ spack spec hdf5` :
+`$ spack spec hdf5`:
 
 ![spack spec hdf5](.images/hdf5_spec.png)
 
@@ -144,7 +144,7 @@ config:
     - $spack/var/spack/stage
 ```
 
-This yaml file specify the path where softwares will be installed and modules will be created. Update these paths as per your directory preferences. If you add / change `module_roots` then make sure to reload `setup-env.sh` so that spack knows the new module path (otherwise you will get `Unable to locate a modulefile` error while loading packages with Spack):
+This yaml file specifies the path where softwares will be installed and modules will be created. Update these paths as per your directory preferences. If you add / change `module_roots` then make sure to reload `setup-env.sh` so that Spack knows the new module path (otherwise you will get `Unable to locate a modulefile` error while loading packages with Spack):
 
 ```
 source $SPACK_ROOT/share/spack/setup-env.sh
@@ -158,9 +158,9 @@ In order to understand the complete workflow, we will go through step-by-step tu
 
 ### Bootstrapping Spack on Mac OS X ###
 
-As discussed earlier, we can build entire software stack including `CMake`, `GCC`, `LLVM`, `MPI` (`MPICH` or `OpenMPI`) with Spack on our laptop. But for the development purpose, most of the time, we don't want to build these packages from source as they take long time to build (my poor MacBook from 2011!). In this case it is good idea to use `Homebrew` or `Macport` to install these packages.
-
-> Note that you can skip installing packages from `Homebrew` if you want to install everything from source with Spack. But then you will end up building lots of dependencies.
+As discussed earlier, we can build the entire software stack including `CMake`, `GCC`, `LLVM`, `MPI` (`MPICH` or `OpenMPI`) with Spack on our laptop. But for development purpose, most of the time, we don't want to build these packages from source as they take long time to build (my poor MacBook from 2011!). In this case it is a good idea to use `Homebrew` or `Macport` to install these packages.
+>
+ Note that you can skip installing packages from `Homebrew` if you want to install everything from source with Spack. But then you will end up building lots of dependencies.
 
 So lets start installing common packages that we need:
 
@@ -737,7 +737,7 @@ In the previous section we saw how to install different softwares. Spack provide
 $ spack load neuron +python %gcc ^python@2.7
 ```
 
-This means "Hey, load neuron package compiled with python bindings enabled, using gcc compiler and python used should be be version 2.7". This command like syntax of Spack is very useful for loading complicated dependency tree. But in scientific computing environment we often need to provide interface for users that they are already familiar with. For example, typically users are familiar with Environment Modules, LMod or Dotkit. Good news is that the Spack has built in support for automatically generating such modules. Spack internally uses tcl modules or lmod itself. For example, if you do `module avail` you will see all modules generated:
+This means "Hey, load neuron package compiled with python bindings enabled, using gcc compiler and python used should be be version 2.7". This command line syntax of Spack is very useful for loading complicated dependency tree. But in scientific computing environment we often need to provide interface for users that they are already familiar with. For example, typically users are familiar with Environment Modules, LMod or Dotkit. Good news is that the Spack has built in support for automatically generating such modules. Spack internally uses tcl modules or lmod itself. For example, if you do `module avail` you will see all modules generated:
 
 ![spack module av](.images/module_av.png)
 
@@ -745,7 +745,7 @@ Those are modules for all software that we have installed so far! If you look at
 
 * modules are named as `package name` + `version` + `compiler` + `hash`
 * even external packages (installed by brew) have modules
-* lot of redundant modules for end users : why they need autoconf, automake module?
+* lot of redundant modules for end users : why do they need autoconf, automake module?
 * hash in module name is not useful for end-users (module names will change once version / dependency changes)
 
 These auto-generated modules are difficult to use for end users and that's where Spack support for modules comes handy! Details information is [here](http://spack.readthedocs.io/en/latest/module_file_support.html#).
@@ -799,8 +799,8 @@ Here is brief explanation of the above modules configuration:
 * we are enabling tcl modules generation
 * if some package is dependent on openmpi then the module name of that package will have suffix `openmpi`. Same for python.
 * we want load all dependent modules automatically (e.g. if hdf5 is depend on zlib : if someone load hdf5 then load zlib module as well
-* if someone try to load same module name twice (e.g. hdf5/gcc and hdf5/icc) then there is conflict (here conflict scheme is package name)
-* generated module file will have `PACKAGENAME_ROOT` environmental variable defined pointing to installation prefix
+* if someone tries to load the same module name twice (e.g. hdf5/gcc and hdf5/icc) then there is conflict (here conflict scheme is package name)
+* generated module file will have `PACKAGENAME_ROOT` environment variable defined pointing to installation prefix
 * filter (i.e. remove) CPATH and LIBRARY_PATH environment variables from generated module
 * don't append hash to the module name (NOTE: you have to make sure your naming_scheme is reasonable so that there is no conflict in name generation of modules)
 * naming scheme of modules is : package name + version + '-' + compiler name
@@ -835,10 +835,10 @@ neurodamus/develop-clang-python-openmpi(36):ERROR:102: Tcl command execution fai
 
 In order to use `lmod` we have to update `$HOME/.spack/darwin/modules.yaml` as:
 
-```
+```yaml
 modules:
 
-  enable::
+  enable:
       - lmod
 
   lmod:
