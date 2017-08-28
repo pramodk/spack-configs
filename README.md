@@ -93,7 +93,7 @@ linux-rhel6-x86_64
 
 ## Platform Specific Configuration ##
 
-Once you setup Spack, you can start installing entire software stack including compilers, libraries, MPI etc. But as an end user of computing systems, we typically have pre-installed software stack like compilers, MPI, scientific libraries, build tools etc. One of the most useful feature of Spack is ability to integrate with exisiting softwares with ease. For example, if you start your development on desktop or Lugano vizcluster, do you want to install `GCC`, `LLVM` compilers, flex, bison, Python, CMake, autoconf etc. from source yourself? Or, do you want to use `apt`, `brew` or pre-installed sofwtares, modules?
+Once you setup Spack, you can start installing entire software stack including compilers, libraries, MPI etc. But as an end user of computing systems, we typically have pre-installed software stack like compilers, MPI, scientific libraries, build tools etc. One of the most useful feature of Spack is ability to integrate with existing softwares with ease. For example, if you start your development on desktop or Lugano vizcluster, do you want to install `GCC`, `LLVM` compilers, flex, bison, Python, CMake, autoconf etc. from source yourself? Or, do you want to use `apt`, `brew` or pre-installed sofwtares, modules?
 
 If you haven't installed such softwares from source, here are examples of dependencies shown by
 
@@ -101,22 +101,22 @@ If you haven't installed such softwares from source, here are examples of depend
 
 ![spack spec hdf5](.images/hdf5_spec.png)
 
-and `$ spack sepc llvm`:
+and `$ spack spec llvm`:
 
 ![spack spec llvm](.images/llvm_spec.png)
 
-The hierarchical output shows that the `hdf5` package depends on `openmpi` (for parallel library) which depends on `hwloc` which depends on `libxml` and so on. The same story with LLVM but the dependecy tree is large! Do we want to install all those packages from source? Even flex, bison and their ten different dependencies?
+The hierarchical output shows that the `hdf5` package depends on `openmpi` (for parallel library) which depends on `hwloc` which depends on `libxml` and so on. The same story with LLVM but the dependency tree is large! Do we want to install all those packages from source? Even flex, bison and their ten different dependencies?
 
-Some users might want to install everything from scratch (e.g. system engineers or developer needing latest `trunk` of LLVM!). But often we want to use existing softwares as much as possible and then concentrate on our own softwrae stack and dependencies.
+Some users might want to install everything from scratch (e.g. system engineers or developer needing latest `trunk` of LLVM!). But often we want to use existing softwares as much as possible and then concentrate on our own software stack and dependencies.
 
-As a user of BBP-IV Lugano VizCluster, Lugano BG-Q, MIRA BG-Q, Theta (Cray KNL), JUROAN (Cray KNL), JULIA (IBM Power 8), Piz Daint (Cray X86_64 + GPU) systems, we have created configurations of exisiting softwares that can be used with Spack. The configurations are present in [spack-configs](https://github.com/pramodskumbhar/spack-configs) repository on GitHub and you can clone that locally:
+As a user of BBP-IV Lugano VizCluster, Lugano BG-Q, MIRA BG-Q, Theta (Cray KNL), JUROAN (Cray KNL), JULIA (IBM Power 8), Piz Daint (Cray X86_64 + GPU) systems, we have created configurations of existing softwares that can be used with Spack. The configurations are present in [spack-configs](https://github.com/pramodskumbhar/spack-configs) repository on GitHub and you can clone that locally:
 
 ```bash
 cd $SOURCE_HOME_DIR
 git clone https://github.com/pramodskumbhar/spack-configs.git
 ```
 
-Typically we create platform specific configurations in `$HOME/.spack/arch` directory where `arch` could be `linux`, `bgq`, `cray` etc. For example, on Lugano BBP IV VizCluster we can use exisiting configurations as :
+Typically we create platform specific configurations in `$HOME/.spack/arch` directory where `arch` could be `linux`, `bgq`, `cray` etc. For example, on Lugano BBP IV VizCluster we can use existing configurations as :
 
 ```
 mkdir -p $HOME/.spack/linux/
@@ -125,7 +125,7 @@ cp -r $SOURCE_HOME_DIR/spack-configs/bbpviz/* ~/.spack/linux/
 
 > Note that the configurations in `bbplinuxdesktop`, `mac`, `docker` are from local development environment and you may have different software versions / stack.
 
-Using such configurations we can use existing system installed packages or modules and build minimum necessary components. For exmaple, with above configuration `spack spec -I hdf5` shows (`-I` for installation status):
+Using such configurations we can use existing system installed packages or modules and build minimum necessary components. For example, with above configuration `spack spec -I hdf5` shows (`-I` for installation status):
 
 ![spack spec hdf5 viz](.images/spec_hdf5_viz_x86.png)
 
@@ -144,15 +144,15 @@ config:
     - $spack/var/spack/stage
 ```
 
-This yaml file specify the path where softwraes will be installed and modules will be created. Update these paths as per your directory preferences. If you add / change `module_roots` then make sure to reload `setup-env.sh` so that spack knows the new module path (otherwise you will get `Unable to locate a modulefile` error while loading packages with Spack):
+This yaml file specify the path where softwares will be installed and modules will be created. Update these paths as per your directory preferences. If you add / change `module_roots` then make sure to reload `setup-env.sh` so that spack knows the new module path (otherwise you will get `Unable to locate a modulefile` error while loading packages with Spack):
 
 ```
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
 
-If you don't have `config.yaml` file then Spack will install softwraes in `$SPACK_ROOT/opt/spack/linux-arch-xxx/gcc-xxx` (platform, architecture and compiler names will be different). More detailed information about Spack configuration files is [here](http://spack.readthedocs.io/en/latest/configuration.html).
+If you don't have `config.yaml` file then Spack will install softwares in `$SPACK_ROOT/opt/spack/linux-arch-xxx/gcc-xxx` (platform, architecture and compiler names will be different). More detailed information about Spack configuration files is [here](http://spack.readthedocs.io/en/latest/configuration.html).
 
-The provided configurations in [spack-configs](https://github.com/pramodskumbhar/spack-configs) are for specific system that we are using. But how to create such configuratios? What if we want to build software stack on completely new Power-X supercomputer?
+The provided configurations in [spack-configs](https://github.com/pramodskumbhar/spack-configs) are for specific system that we are using. But how to create such configurations? What if we want to build software stack on completely new Power-X supercomputer?
 
 In order to understand the complete workflow, we will go through step-by-step tutorial for OS X and Linux cluster platform. Once you are familiar with this workflow, you can use same workflow for any platform.
 
@@ -353,7 +353,7 @@ packages:
         version: [3.8.2]
 ```
 
-In the above configuration we told Spack to use `CMake` from `/usr/local` (installed by `Homebrew`). Finally `buildable: False` tells Spack to not build this package from source. So Spack will never try to build this package explicitly and if constraints are not satisfied, the following error is reaised:
+In the above configuration we told Spack to use `CMake` from `/usr/local` (installed by `Homebrew`). Finally `buildable: False` tells Spack to not build this package from source. So Spack will never try to build this package explicitly and if constraints are not satisfied, the following error is raised:
 
 ```bash
 ==> Error: The spec 'cmake' is configured as not buildable, and no matching external installs were found
@@ -404,9 +404,8 @@ With the above configuration we tell spack to not build fortran bindings of `HDF
 
 With all system packages, `$HOME/.spack/darwin/packages.yaml` looks like below:
 
-```bash
+```yaml
 packages:
-
     cmake:
         paths:
             cmake@3.9.1: /usr/local
@@ -544,7 +543,7 @@ With above configuration we tell Spack to find various packages under `/usr/loca
 
 	You can use `packages.yaml` as template and add/delete new packages as per your requirements. You can update versions, compiler preferences etc.
 
-* I created `packages.yaml` but getring "Error: Error parsing yaml in ...xxx...". Even worse just "Error". What to do?
+* I created `packages.yaml` but getting "Error: Error parsing yaml in ...xxx...". Even worse just "Error". What to do?
 
 	Spack configuration files are [YAML](http://www.yaml.org/start.html) specifications. If you have not used proper indentation or mixed spaces/tabs then we get parsing errors. Sometime we don't get clear message from Spack and difficult to trace the error. In this you can use `--debug` or `-d` option to spack command to provide detailed trace:
 
@@ -567,7 +566,7 @@ With above configuration we tell Spack to find various packages under `/usr/loca
 	spack install packageA %clang ^boost %gcc@4.4
 	```
 
-* I am trying to build packageX but this is failing with my favourite compiler version XX and OS YY. Why?
+* I am trying to build packageX but this is failing with my favorite compiler version XX and OS YY. Why?
 
 	Spack packages are being developed by system engineers, package developers, domain scientists and others. Not every package is tested for every possible compiler version and OS distribution. Some packages can't be build on specific platform or specific compilers (e.g. Cray or Pathscale compiler?). Such packages are being improved so that the [conflicts](http://spack.readthedocs.io/en/latest/packaging_guide.html#conflicts) are being added. And hence sometime you have to check some more details about compatibility / build failure.
 
@@ -582,7 +581,7 @@ Before installing any package, first step is to check what is going to be instal
 
 ![spack spec hdf5](.images/spec_hdf5_after.png)
 
-Here Spak is going to install 1.8.17 version of hdf5 using gcc 4.9.4. You can ignore rest of the information for now. Now if we try to install it using `spack install`:
+Here Spack is going to install 1.8.17 version of hdf5 using gcc 4.9.4. You can ignore rest of the information for now. Now if we try to install it using `spack install`:
 
 ![spack spec hdf5](.images/install_hdf5.png)
 
@@ -624,7 +623,7 @@ Currently Loaded Modulefiles:
   1) osu-micro-benchmarks-5.3-gcc-4.9.4-lx75aay
 ```
 
-Similarly you can install other packages provided by Spack. You can see avaialable packages using `list` command:
+Similarly you can install other packages provided by Spack. You can see available packages using `list` command:
 
 ```bash
 $ spack list
@@ -723,7 +722,7 @@ There are lot of useful commands and here are some useful once:
 * `spack find -p` : find packages and also show path
 * `spack find -d neuron` : find neuron package and show it was build with dependency tree:
 ![spack bbp sim stack](.images/find_neuron_dep.png)
-* `spack uninstall --all -y` : uninstall all packages and yes for configrmation
+* `spack uninstall --all -y` : uninstall all packages and yes for confirmation
 * `spack uninstall %gcc` : uninstall gcc compiled packages
 * `spack uninstall --all --dependents -y cmake` : uninstall CMake and all packages that dependent on CMake
 * `spack compilers` : show compiler list
@@ -746,10 +745,10 @@ Those are modules for all software that we have installed so far! If you look at
 
 * modules are named as `package name` + `version` + `compiler` + `hash`
 * even external packages (installed by brew) have modules
-* lot of redundent modules for end users : why they need autoconf, automake module?
+* lot of redundant modules for end users : why they need autoconf, automake module?
 * hash in module name is not useful for end-users (module names will change once version / dependency changes)
 
-These autogenerated modules are difficult to use for end users and that's where Spack support for modules comes handy! Details information is [here](http://spack.readthedocs.io/en/latest/module_file_support.html#).
+These auto-generated modules are difficult to use for end users and that's where Spack support for modules comes handy! Details information is [here](http://spack.readthedocs.io/en/latest/module_file_support.html#).
 Below instructions provide quick instructions for generating module on OS X.
 
 We will look into `Environment Modules` as well as `LMod`. As discussed in `OS X` section, make sure you have `module` and `lmod` installed via brew. Your `.bashrc` or `.bash_profile` should activate the support for modules as:
@@ -761,7 +760,7 @@ source ${MODULES_HOME}/Modules/init/bash
 
 > brew install `lmod`/ `modules` under `/usr/local/opt/`
 
-In order to tune the module generation first step is to create `modules.yaml` in `$HOME/.spack/modules.yaml`. This configuration file controls how modules will be generated. Here is sample configuratio for tcl modules:
+In order to tune the module generation first step is to create `modules.yaml` in `$HOME/.spack/modules.yaml`. This configuration file controls how modules will be generated. Here is sample configuration for tcl modules:
 
 ```
 modules:
@@ -802,13 +801,13 @@ Here is brief explanation of the above modules configuration:
 * we want load all dependent modules automatically (e.g. if hdf5 is depend on zlib : if someone load hdf5 then load zlib module as well
 * if someone try to load same module name twice (e.g. hdf5/gcc and hdf5/icc) then there is conflict (here conflict scheme is package name)
 * generated module file will have `PACKAGENAME_ROOT` environmental variable defined pointing to installation prefix
-* filter (i.e. remove) CPATH and LIBRARY_PATH environmet variables from generated module
+* filter (i.e. remove) CPATH and LIBRARY_PATH environment variables from generated module
 * don't append hash to the module name (NOTE: you have to make sure your naming_scheme is reasonable so that there is no conflict in name generation of modules)
 * naming scheme of modules is : package name + version + '-' + compiler name
 * don't generate modules for packages or variants provided in the `blacklist`
 * for openmpi package set specified environment variables
 
-With the above `$HOME/.spack/darwin/modules.yaml` file we are ready to regenrate using `module refresh` command:
+With the above `$HOME/.spack/darwin/modules.yaml` file we are ready to regenerate using `module refresh` command:
 
 ```
 $ spack module refresh -y --delete-tree
@@ -873,7 +872,7 @@ modules:
 The configuration file is similar to tcl modules except:
 
 * `core_compilers`: the generated module hierarchy always contains the three layers `Core` / `Compiler` / `MPI` and here we using gcc v4.4 as core compiler which has built clang and gcc 4.9.4
-*  suffixes : we have now removed openmpi suffix because MPI is part of Lmod hierarchy (and hence modules name will be distinguised by hierarchy itself)
+*  suffixes : we have now removed openmpi suffix because MPI is part of Lmod hierarchy (and hence modules name will be distinguished by hierarchy itself)
 
 Make sure to activate support for LMod using following lines in `.bashrc` or `.bash_profile`:
 
@@ -921,7 +920,7 @@ We only see compilers because we are in hierarchical modules world! As mentioned
 
 ![spack lmod av](.images/lmod_llvm_load_av.png)
 
-As second hiearchy is MPI, all modules compiled with MPI as hidden in the next hierarchy. This is useful when we don't to mix modules compiled with two different MPIs for two different network fabrics. Note that the Python is shown in 2nd hierarchy itself because it is not dependent on MPI. After loading OpenMPI module, the `module avail` looks like below:
+As second hierarchy is MPI, all modules compiled with MPI as hidden in the next hierarchy. This is useful when we don't to mix modules compiled with two different MPIs for two different network fabrics. Note that the Python is shown in 2nd hierarchy itself because it is not dependent on MPI. After loading OpenMPI module, the `module avail` looks like below:
 
 ![spack lmod av](.images/lmod_llvm_load_openmpi_av.png)
 
@@ -933,7 +932,7 @@ As our `modules.yaml` has `autoload: 'direct'`, all the direct dependencies of p
 
 But, what is the advantage of going through extra complicated multi-step process?
 
-Well, suppose now we want to load modules build by gcc compiler or another mpi version necessary for different cluster partition (e.g. KNL or Power8 or nodes withg inifiniband network). Typically we will do `module purge` and start over again! And that's when Lmod make workflow simpler. If we just switch mpi or compiler, Lmod will automatically detect the changes in the dependency and will reload everything consistent! Lets swap llvm compiler by gcc :
+Well, suppose now we want to load modules build by gcc compiler or another mpi version necessary for different cluster partition (e.g. KNL or Power8 or nodes with Infiniband network). Typically we will do `module purge` and start over again! And that's when Lmod make workflow simpler. If we just switch mpi or compiler, Lmod will automatically detect the changes in the dependency and will reload everything consistent! Lets swap llvm compiler by gcc :
 
 ![spack lmod av](.images/lmod_llvm_swap_gcc.png)
 
