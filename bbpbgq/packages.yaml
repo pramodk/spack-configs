@@ -86,7 +86,7 @@ packages:
         version: [1.13]
     tau:
         variants: ~comm ~phase
-        version: [2.26.2]
+        version: [2.26.3]
 
     #BBP Packages
     nest:

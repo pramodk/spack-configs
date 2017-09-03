@@ -92,7 +92,7 @@ packages:
 
     tau:
         variants: ~openmp ~comm ~phase
-        version: [2.26.2]
+        version: [2.26.3]
 
     coreneuron:
         variants: ~openmp
