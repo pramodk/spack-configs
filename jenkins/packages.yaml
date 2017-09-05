@@ -1,0 +1,219 @@
+packages:
+
+    cmake:
+        paths:
+            cmake@2.8.12: /usr/local
+        version: [2.8.12]
+
+    flex:
+        paths:
+            flex@2.5.35: /usr/local
+        buildable: False
+        version: [2.5.35]
+
+    bison:
+        paths:
+            bison@2.4.1: /usr/local
+        buildable: False
+        version: [2.4.1]
+
+    autoconf:
+        paths:
+            autoconf@2.63.5: /usr/local
+        buildable: False
+        version: [2.63.5]
+
+    automake:
+        paths:
+            automake@1.11.1: /usr/local
+        buildable: False
+        version: [1.11.1]
+
+    m4:
+        paths:
+            m4@1.4.13: /usr/local
+        buildable: False
+        version: [1.4.13]
+
+    libunwind:
+        paths:
+            linunwind@1.1.3: /usr/local
+        buildable: False
+        version: [1.1.3]
+
+    binutils:
+        paths:
+            binutils@2.20.51: /usr/local
+        buildable: False
+        version: [2.20.51]
+
+    environment-modules:
+        paths:
+            environment-modules@3.2.10: /usr/local
+        buildable: False
+        version: [3.2.10]
+
+    pkg-config:
+        paths:
+            pkg-config@0.23.9: /usr/local
+        buildable: False
+        version: [0.23.9]
+
+    libtool:
+        paths:
+            libtool@2.2.6: /usr/local
+        buildable: False
+        version: [2.2.6]
+
+    ncurses:
+        paths:
+            ncurses@5.7.4: /usr
+        buildable: False
+        version: [5.7.4]
+
+    lmod:
+        paths:
+            lmod@6.5.1: /usr
+        buildable: False
+        version: [6.5.1]
+
+    libpciaccess:
+        paths:
+            libpciaccess@0.13.5: /usr/local
+        buildable: False
+        version: [0.13.5]
+
+    libxml2:
+        paths:
+            libxml2@2.7.6: /usr/local
+        buildable: False
+        version: [2.7.6]
+
+    bzip2:
+        paths:
+            bzip2@1.0.5: /usr/local
+        buildable: False
+        version: [1.0.5]
+
+    readline:
+        paths:
+            readline@6.0.4: /usr/local
+        buildable: False
+        version: [6.0.4]
+
+    sqlite:
+        paths:
+            sqlite@3.6.20: /usr/local
+        buildable: False
+        version: [3.6.20]
+
+    hwloc:
+        paths:
+            hwloc@1.5.3: /usr/local
+        buildable: False
+        version: [1.5.3]
+
+    zlib:
+        paths:
+            zlib@1.2.3: /usr/local
+        buildable: False
+        version: [1.2.3]
+
+    libedit:
+        paths:
+            libedit@2.11.4: /usr/local
+        buildable: False
+        version: [2.11.4]
+
+    openssl:
+        paths:
+            openssl@1.0: /usr/local
+        buildable: False
+        version: [1.0]
+
+    fontconfig:
+        paths:
+            fontconfig@2.8.0: /usr/local
+        buildable: False
+        version: [2.8.0]
+
+    glib:
+        paths:
+            glib@1.2.10: /usr/local
+        buildable: False
+        version: [1.2.10]
+
+    libX11:
+        paths:
+            libX11@1.6.4: /usr/local
+        buildable: False
+        version: [1.6.4]
+
+    jpeg:
+        paths:
+            jpeg@1.2.1: /usr/local
+        buildable: False
+        version: [1.2.1]
+
+    libmng:
+        paths:
+            libmng@1.0.10: /usr/local
+        buildable: False
+        version: [1.0.10]
+
+    cairo:
+        paths:
+            cairo@1.8.8: /usr/local
+        buildable: False
+        version: [1.8.8]
+
+    tk:
+        paths:
+            tk@8.5.7: /usr/local
+        buildable: False
+        version: [8.5.7]
+
+    pango:
+        paths:
+            pango@1.28.1: /usr/local
+        buildable: False
+        version: [1.28.1]
+
+    tcl:
+        paths:
+            tcl@8.5.7: /usr/local
+        buildable: False
+        version: [8.5.7]
+
+    curl:
+        paths:
+            curl@7.19.7: /usr/local
+        buildable: False
+        version: [7.19.7]
+
+    pcre:
+        paths:
+            pcre@7.8.7: /usr/local
+        buildable: False
+        version: [7.8.7]
+
+    glib:
+        paths:
+            glib@1.2.10: /usr/local
+        buildable: False
+        version: [1.2.10]
+
+    gcc:
+        paths:
+            gcc@4.4.7%gcc@3.4.6: /usr/local
+        version: [4.4.7]
+
+    llvm:
+        paths:
+            llvm@3.4.2%gcc@3.4.6: /usr/local
+        version: [3.4.2]
+
+    all:
+        compiler: [gcc@4.4.7, clang@3.4.2]
+        providers:
+            mpi: [mpich, mvapich2]
