@@ -1,0 +1,66 @@
+compilers:
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /usr/bin/clang
+      cxx: /usr/bin/clang++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    spec: clang@3.4.2
+    target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /usr/lib64/ccache/gcc
+      cxx: /usr/lib64/ccache/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    spec: gcc@4.4.7
+    target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /usr/lib64/ccache/gcc34
+      cxx: /usr/lib64/ccache/g++34
+      f77: null
+      fc: null
+    spec: gcc@3.4.6
+    target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /opt/rh/devtoolset-6/root/usr/bin/gcc
+      cxx: /opt/rh/devtoolset-6/root/usr/bin/g++
+      f77: /opt/rh/devtoolset-6/root/usr/bin/gfortran
+      fc: /opt/rh/devtoolset-6/root/usr/bin/gfortran
+    spec: gcc@6.3.1
+    target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /opt/rh/devtoolset-4/root/usr/bin/gcc
+      cxx: /opt/rh/devtoolset-4/root/usr/bin/g++
+      f77: /opt/rh/devtoolset-4/root/usr/bin/gfortran
+      fc: /opt/rh/devtoolset-4/root/usr/bin/gfortran
+    spec: gcc@5.3.1
+    target: x86_64

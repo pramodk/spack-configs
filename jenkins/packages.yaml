@@ -37,9 +37,9 @@ packages:
 
     libunwind:
         paths:
-            linunwind@1.1.3: /usr/local
+            libunwind@1.1: /usr/local
         buildable: False
-        version: [1.1.3]
+        version: [1.1]
 
     binutils:
         paths:
@@ -143,9 +143,9 @@ packages:
         buildable: False
         version: [1.2.10]
 
-    libX11:
+    libx11:
         paths:
-            libX11@1.6.4: /usr/local
+            libx11@1.6.4: /usr/local
         buildable: False
         version: [1.6.4]
 
@@ -197,23 +197,24 @@ packages:
         buildable: False
         version: [7.8.7]
 
-    glib:
-        paths:
-            glib@1.2.10: /usr/local
-        buildable: False
-        version: [1.2.10]
-
     gcc:
         paths:
-            gcc@4.4.7%gcc@3.4.6: /usr/local
-        version: [4.4.7]
+            gcc@5.3.1%gcc@4.4.7: /usr/local
+            gcc@6.3.1%gcc@4.4.7: /usr/local
+        version: [5.3.1, 6.3.1]
+
+    python:
+        paths:
+            python@2.7: /opt/rh/python27/root/usr/
+            python@3.3: /opt/rh/python33/root/usr/
+        version: [2.7, 3.3]
 
     llvm:
         paths:
-            llvm@3.4.2%gcc@3.4.6: /usr/local
+            llvm@3.4.2%gcc@4.4.7: /usr/local
         version: [3.4.2]
 
     all:
-        compiler: [gcc@4.4.7, clang@3.4.2]
+        compiler: [gcc@5.3.1, gcc@6.3.1, clang@3.4.2]
         providers:
             mpi: [mpich, mvapich2]
