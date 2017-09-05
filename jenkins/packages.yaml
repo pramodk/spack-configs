@@ -197,17 +197,23 @@ packages:
         buildable: False
         version: [7.8.7]
 
+    slurm:
+        paths:
+            slurm@17.02.4: /usr/local
+        buildable: False
+        version: [17.02.4]
+
+    #python:
+    #    paths:
+    #        python@2.7: /opt/rh/python27/root/usr/
+    #        python@3.3: /opt/rh/python33/root/usr/
+    #    version: [2.7, 3.3]
+
     gcc:
         paths:
             gcc@5.3.1%gcc@4.4.7: /usr/local
             gcc@6.3.1%gcc@4.4.7: /usr/local
         version: [5.3.1, 6.3.1]
-
-    python:
-        paths:
-            python@2.7: /opt/rh/python27/root/usr/
-            python@3.3: /opt/rh/python33/root/usr/
-        version: [2.7, 3.3]
 
     llvm:
         paths:
