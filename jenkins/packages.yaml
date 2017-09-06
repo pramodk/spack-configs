@@ -110,7 +110,7 @@ packages:
     hwloc:
         paths:
             hwloc@1.5.3: /usr/local
-        buildable: False
+        #buildable: False
         version: [1.5.3]
 
     zlib:

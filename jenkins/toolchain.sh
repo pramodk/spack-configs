@@ -10,9 +10,10 @@ spack config get packages
 
 # the list of packages that we want to install
 dev_packages=(
-    	'openmpi'
+    	'openmpi schedulers=slurm'
+    #	'openmpi +cuda schedulers=slurm'
 	'mpich'
-	'mvapich2'
+	'mvapich2 process_managers=slurm'
 	'spark'
 	'armadillo'
 	'boost'
@@ -29,9 +30,8 @@ dev_packages=(
 	'netcdf'
 	'octave'
 	'ompss'
-	'cuba'
+	'cube'
 	'qt'
-	'qt-creator'
 	'r'
 	'raja'
 	'random123'
@@ -55,6 +55,9 @@ dev_packages=(
 	'py-theano'
 	'py-wheel'
 	'singularity'
+	'scorep'
+	'tau'
+	'extrae'
 	#'allinea-forge'
 	#'likwid'
 )
@@ -78,7 +81,7 @@ do
     for package in "${dev_packages[@]}"
     do
         # spec is show just for information purpose
-        spack spec $package %$compiler
+        spack spec -I $package %$compiler
 
         # install package
         spack install $extra_opt $package %$compiler
