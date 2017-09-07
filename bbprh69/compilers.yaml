@@ -6,11 +6,11 @@ compilers:
     modules: []
     operating_system: rhel6
     paths:
-      cc: /usr/bin/clang
-      cxx: /usr/bin/clang++
-      f77: null
-      fc: null
-    spec: clang@3.4.2
+      cc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-7.2.0/bin/gcc
+      cxx: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-7.2.0/bin/g++
+      f77: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-7.2.0/bin/gfortran
+      fc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-7.2.0/bin/gfortran
+    spec: gcc@7.2.0
     target: x86_64
 - compiler:
     environment: {}
@@ -19,11 +19,11 @@ compilers:
     modules: []
     operating_system: rhel6
     paths:
-      cc: /usr/lib64/ccache/gcc
-      cxx: /usr/lib64/ccache/g++
-      f77: /usr/bin/gfortran
-      fc: /usr/bin/gfortran
-    spec: gcc@4.4.7
+      cc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-4.9.3/bin/gcc
+      cxx: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-4.9.3/bin/g++
+      f77: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-4.9.3/bin/gfortran
+      fc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-4.9.3/bin/gfortran
+    spec: gcc@4.9.3
     target: x86_64
 - compiler:
     environment: {}
@@ -32,9 +32,48 @@ compilers:
     modules: []
     operating_system: rhel6
     paths:
-      cc: /usr/lib64/ccache/gcc34
-      cxx: /usr/lib64/ccache/g++34
+      cc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-5.3.0/bin/gcc
+      cxx: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-5.3.0/bin/g++
+      f77: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-5.3.0/bin/gfortran
+      fc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/gcc-5.3.0/bin/gfortran
+    spec: gcc@5.3.0
+    target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-16.0.0.1/bin/icc
+      cxx: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-16.0.0.1/bin/icpc
       f77: null
       fc: null
-    spec: gcc@3.4.6
+    spec: intel@16.0.3
+    target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/bin/icc
+      cxx: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/bin/icpc
+      f77: null
+      fc: null
+    spec: intel@17.0.0
+    target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.9.3/llvm-4.0.1/bin/clang
+      cxx: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.9.3/llvm-4.0.1/bin/clang++
+      f77: null
+      fc: null
+    spec: clang@4.0.1
     target: x86_64
