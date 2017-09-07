@@ -61,6 +61,7 @@ Some software tarballs are very large and often time consuming to download (e.g.
 
 ```
 mkdir -p $HOME/SPACK_HOME/install_home/mirror
+spack mirror add local_filesystem $HOME/SPACK_HOME/install_home/mirror
 
 packages_to_mirror=(
     'gcc@4.9.3'
@@ -81,7 +82,10 @@ Some softwares do need manual download from registered account (e.g. PGI compile
 
 ```
 mkdir -p $HOME/SPACK_HOME/install_home/mirror/pgi
-cp /gpfs/bbp.cscs.ch/apps/viz/tools/pgi/pgilinux-2017-177-x86_64.tar.gz $HOME/SPACK_HOME/install_home/mirror/pgi/pgi-17.7.tar.gz
+cp /gpfs/bbp.cscs.ch/home/kumbhar-adm/pgilinux-2017-174-x86_64.tar.gz $HOME/SPACK_HOME/install_home/mirror/pgi/pgi-17.4.tar.gz
+
+# don't have license for 17.7
+#cp /gpfs/bbp.cscs.ch/apps/viz/tools/pgi/pgilinux-2017-177-x86_64.tar.gz $HOME/SPACK_HOME/install_home/mirror/pgi/pgi-17.7.tar.gz
 ```
 > Note : For PGI compiler you can keep tarball in some local directory and invoke `spack install` from that same directory.
 
@@ -120,15 +124,17 @@ Here is sample script to achieve this:
 
 ```
 compilers=(
-    'pgi@17.7'
     'intel@17.0.0.1'
     'intel@16.0.0.1'
     'gcc@4.9.3'
     'gcc@5.3.0'
     'gcc@7.2.0'
+    'pgi+network+nvidia'
 )
 
 core_compiler='gcc@4.4.7'
+
+spack compiler find
 
 for compiler in "${compilers[@]}"
 do
@@ -161,6 +167,8 @@ cp $HOME/SPACK_HOME/spack-configs/bbprh69/compilers.modules.yaml ~/.spack/linux/
 spack module refresh --yes-to-all --delete-tree --module-type tcl --yes-to-all
 ```
 
+> NOTE : make sure gcc 4.9.3 is already added with spack compiler find `spack location --install-dir gcc@4.9.3`
+
 And now Spack will generat modules for compiler only:
 
 ```
@@ -170,7 +178,90 @@ $ echo $MODULEPATH
 $ module avail
 
 ----------------------------------------------- /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/tcl/linux-rhel6-x86_64 -----------------------------------------------
-gcc-4.9.3      gcc-5.3.0      gcc-7.2.0      intel-16.0.0.1 intel-17.0.0.1 llvm-4.0.1     pgi-17.7
+gcc-4.9.3      gcc-5.3.0      gcc-7.2.0      intel-16.0.0.1 intel-17.0.0.1 llvm-4.0.1     pgi-17.4
 ```
 
 Alright! All our compilers are ready for next software stack installation!
+
+> Note: For a network installation of PGI compilers, we must have to run below installation script on each system
+on the network where the compilers and tools will be available for use. For example, we installed PGI compilers on bbpviz1. If we try to use PGI compiler on bbpviz2, we get :
+
+```
+$ pgcc hello.c
+pgcc-Error-Please run makelocalrc to complete your installation
+```
+> In this case we have to run following on every node where we are going to compile the code:
+
+```
+$ module load pgi-17.4
+$ which makelocalrc
+~/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/pgi-17.4/linux86-64/17.4/bin/makelocalrc
+$ makelocalrc -x ~/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/pgi-17.4/linux86-64/17.4 -net ~/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/pgi-17.4/linux86-64/17.4
+```
+
+> NOTE : INTEL_ROOT is special environmental variable for Intel compilers! So don't set PACKAGE_ROOT into modules.yaml!
+
+
+### Software Stack Installation
+
+```
+rm -rf ~/.spack/linux/*
+cp $HOME/SPACK_HOME/spack-configs/bbprh69/config.yaml ~/.spack/linux/
+cp $HOME/SPACK_HOME/spack-configs/bbprh69/packages.yaml ~/.spack/linux/
+```
+
+Let's add compilers. Note that we have either specify complete path or load modules as:
+
+```
+export MODULEPATH=/gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/tcl/linux-rhel6-x86_64:$MODULEPATH
+module load gcc-4.9.3 gcc-5.3.0 gcc-7.2.0 intel-16.0.0.1 intel-17.0.0.1 llvm-4.0.1 pgi-17.4
+spack compiler find
+```
+
+We will now have following compilers:
+
+```
+$ spack compilers
+==> Available compilers
+-- clang rhel6-x86_64 -------------------------------------------
+clang@4.0.1  clang@3.4.2
+
+-- gcc rhel6-x86_64 ---------------------------------------------
+gcc@7.2.0  gcc@5.3.0  gcc@4.9.3  gcc@4.4.7  gcc@3.4.6
+
+-- intel rhel6-x86_64 -------------------------------------------
+intel@17.0.0  intel@16.0.3
+```
+
+Note that we don't have PGI `pgfortran` license. LLVM compiler doesn't ship fortran compiler (yet). Also, if we install only `C/C++` components of Intel Parallel Studio then fortran compiler (i.e. `ifort`) is not available. Fortran compiler is required for for MPI installation. We can use `gfortran` in `compilers.yaml` as a replacement:
+
+```
+sed -i 's#.*fc: .*pgfortran#      fc: /usr/bin/gfortran#' ~/.spack/linux/compilers.yaml
+sed -i 's#.*f77: .*pgfortran#      f77: /usr/bin/gfortran#' ~/.spack/linux/compilers.yaml
+sed  -i 's#.*f77: null#      f77: /usr/bin/gfortran#' ~/.spack/linux/compilers.yaml
+sed  -i 's#.*fc: null#      fc: /usr/bin/gfortran#' ~/.spack/linux/compilers.yaml
+```
+
+---
+> NOTE: This is no longer needed for package installations:
+> Intel compilers heavily depend on `LD_LIBRARY_PATH`. We have to either add module entry to `compilers.yaml` and then use `dirty` flag or have to provide configuration file (CFG) as:
+
+```
+-isystem$HOME/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/include #
+-Xlinker -L$HOME/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/lib/intel64 #
+-Xlinker -rpath=$HOME/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/lib/intel64
+```
+
+> And set following environmental variables before invoking install command:
+
+```
+export ICCCFG=$HOME/SPACK_HOME/SPACK_HOME/spack-configs/bbprh69/icl.cfg
+export ICPCFG=$HOME/SPACK_HOME/SPACK_HOME/spack-configs/bbprh69/icl.cfg
+```
+---
+
+#### Making Compilers Available for Users [TODO]
+
+* Add modules entry
+* Set ICCCFG, ICPCFG correctly in modules : make use of `spack location --install-dir icc@17.0.0.1` and update template file correctly
+* Need to set MKL, TBB entries into icl.cfg file
