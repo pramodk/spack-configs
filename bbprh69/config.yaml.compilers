@@ -1,0 +1,9 @@
+config:
+  install_tree: ~/SPACK_HOME/install_home/externals/install
+  module_roots:
+    tcl: ~/SPACK_HOME/install_home/externals/tcl
+    lmod: ~/SPACK_HOME/install_home/externals/lmod
+  build_stage:
+    - $tempdir
+    - $spack/var/spack/stage
+  install_path_scheme: '${ARCHITECTURE}/${COMPILERNAME}-${COMPILERVER}/${PACKAGE}-${VERSION}'
