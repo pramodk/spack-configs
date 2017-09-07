@@ -111,7 +111,7 @@ We will copy the provided `config.yaml` for compilers installation:
 
 ```
 rm -rf $HOME/.spack/linux/*
-cp $HOME/SPACK_HOME/spack-configs/bbprh69/config.yaml.compilers ~/.spack/linux/config.yaml
+cp $HOME/SPACK_HOME/spack-configs/bbprh69/compilers.config.yaml ~/.spack/linux/config.yaml
 ```
 
 We can now install all required compilers using Spack. Some compilers like `llvm` can't be compiled with old version of gcc (e.g. `llvm` required gcc version `>=4.8`). In this case we will first install newer `gcc` and then use it for `llvm` installation.
@@ -144,3 +144,31 @@ spack install llvm@4.0.1 %gcc@4.9.3
 ```
 
 > Note : We are not using `packages.yaml` with system installed packages here. Some compilers do need latest `autoconf`, `automake` etc. and better to install those all dependencies from scratch. (e.g. for `gmp-6.1.2` we saw errors while installing with system packages).
+
+Once all compilers are installed we want to generate `user-friendly` modules and not default ones like below:
+
+```
+----------------------------------------- /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/tcl/linux-rhel6-x86_64 -----------------------------------------
+autoconf-2.63-gcc-4.4.7-3nydg2s        gmp-6.1.2-gcc-4.4.7-qbnerqz            mpfr-3.1.5-gcc-4.4.7-qqtt2et           py-six-1.10.0-gcc-4.4.7-dviyzq5
+autoconf-2.69-gcc-4.4.7-faqgymq        help2man-1.47.4-gcc-4.4.7-jrwlm4p      ncurses-6.0-gcc-4.4.7-4wkexyz          py-six-1.10.0-gcc-4.9.3-4o4hqmk
+```
+
+Copy below settings file and `re-generate` modules as:
+
+```
+cp $HOME/SPACK_HOME/spack-configs/bbprh69/compilers.modules.yaml ~/.spack/linux/modules.yaml
+spack module refresh --yes-to-all --delete-tree --module-type tcl --yes-to-all
+```
+
+And now generated modules for compiler should be avaialble:
+
+```
+$ echo $MODULEPATH
+/gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/tcl/linux-rhel6-x86_64
+
+$ module avail
+
+----------------------------------------- /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/tcl/linux-rhel6-x86_64 -----------------------------------------
+gcc-4.4.7/gcc-4.9.3      gcc-4.4.7/gcc-7.2.0      gcc-4.4.7/intel-17.0.0.1 gcc-4.9.3/llvm-4.0.1
+gcc-4.4.7/gcc-5.3.0      gcc-4.4.7/intel-16.0.0.1 gcc-4.4.7/pgi-17.7
+```
