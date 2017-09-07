@@ -47,10 +47,6 @@ packages:
         paths:
             lua-luafilesystem@1.4.2: /usr
         version: [1.4.2]
-    libpciaccess:
-        paths:
-            libpciaccess@0.13.4: /usr
-        version: [0.13.4]
     xz:
         paths:
             xz@4.9: /usr
