@@ -45,7 +45,7 @@ modules:
           '${PACKAGE}_ROOT': '${PREFIX}'
       filter:
         environment_blacklist: ['CPATH', 'LIBRARY_PATH']
-    naming_scheme: '${COMPILERNAME}-${COMPILERVER}/${PACKAGE}-${VERSION}'
+    naming_scheme: '${PACKAGE}-${VERSION}'
     hash_length: 0
     whitelist:
       - 'gcc'
