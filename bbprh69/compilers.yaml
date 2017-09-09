@@ -129,3 +129,16 @@ compilers:
       fc: /usr/bin/gfortran
     spec: pgi@17.4
     target: x86_64
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: []
+    operating_system: rhel6
+    paths:
+      cc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-parallel-studio-professional.2017.4/compilers_and_libraries_2017.4.196/linux/bin/intel64/icc
+      cxx: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-parallel-studio-professional.2017.4/compilers_and_libraries_2017.4.196/linux/bin/intel64/icpc
+      f77: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-parallel-studio-professional.2017.4/compilers_and_libraries_2017.4.196/linux/bin/intel64/ifort
+      fc: /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-parallel-studio-professional.2017.4/compilers_and_libraries_2017.4.196/linux/bin/intel64/ifort
+    spec: intel@17.0.4
+    target: x86_64

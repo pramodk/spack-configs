@@ -39,14 +39,11 @@ packages:
         paths:
             ncurses@5.7.4: /usr
         version: [5.7.4]
+    # not complete installation as lacks luarocks
     lua:
         paths:
             lua@5.1.4: /usr
         version: [5.1.4]
-    lua-luafilesystem:
-        paths:
-            lua-luafilesystem@1.4.2: /usr
-        version: [1.4.2]
     xz:
         paths:
             xz@4.9: /usr
@@ -111,14 +108,18 @@ packages:
         paths:
             curl@7.19.7: /usr
         version: [7.19.7]
-    gettext:
+    tar:
         paths:
-            gettext@0.19.8: /usr
-        version: [0.19.8]
+            tar@1.23: /usr
+        version: [1.23]
     pcre:
         paths:
             pcre@7.8.7: /usr
         version: [7.8.7]
+    perl:
+        paths:
+            perl@5.10.1: /usr
+        version: [5.10.1]
     slurm:
         paths:
             slurm@16.05: /usr

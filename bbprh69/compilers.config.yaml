@@ -1,5 +1,6 @@
 config:
   install_tree: ~/SPACK_HOME/install_home/externals/install
+  source_cache: /gpfs/bbp.cscs.ch/scratch/gss/bgq/kumbhar-adm/SPACK_HOME/var/spack/cache
   module_roots:
     tcl: ~/SPACK_HOME/install_home/externals/tcl
     lmod: ~/SPACK_HOME/install_home/externals/lmod
