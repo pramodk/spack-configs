@@ -2,14 +2,19 @@
 
 These are brief instructions to deploy entire software stack on RH6.9 at BBP.
 
+Use workspace environment variable :
+
+```
+export WORKSPACE=$HOME
+```
 
 #### Clone Repositories
 
 clone below repositories for Spack and Spack configurations:
 
 ```
-mkdir -p $HOME/SPACK_HOME
-cd $HOME/SPACK_HOME
+mkdir -p $WORKSPACE/SPACK_HOME
+cd $WORKSPACE/SPACK_HOME
 git clone https://github.com/pramodskumbhar/spack.git
 git clone https://github.com/pramodskumbhar/spack-configs.git
 ```
@@ -17,7 +22,7 @@ git clone https://github.com/pramodskumbhar/spack-configs.git
 Add following to `.bashrc`
 
 ```
-export SPACK_ROOT=$HOME/SPACK_HOME/spack
+export SPACK_ROOT=$WORKSPACE/SPACK_HOME/spack
 export PATH=$SPACK_ROOT/bin:$PATH
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
@@ -25,10 +30,10 @@ source $SPACK_ROOT/share/spack/setup-env.sh
 Use stable branches that we continiously test for deploying entire stack:
 
 ```
-cd $HOME/SPACK_HOME/spack
+cd $WORKSPACE/SPACK_HOME/spack
 git checkout bbprh69
 
-cd $HOME/SPACK_HOME/spack-configs.git
+cd $WORKSPACE/SPACK_HOME/spack-configs
 git checkout bbprh69
 ```
 
@@ -37,10 +42,11 @@ git checkout bbprh69
 Commercial softwares like `Intel`, `PGI` and `Allinea` need licenses. These are usually simple text files with license key or license server details. In Spack we can copy those licenses in following directory:
 
 ```
-cp -r licenses $HOME/SPACK_HOME/spack/spack/etc/spack/
+git clone ssh://bbpcode.epfl.ch/user/kumbhar/spack-licenses licenses
+cp -r licenses $WORKSPACE/SPACK_HOME/spack/etc/spack/
 ```
 
-> Actual path on BBP IV : /gpfs/bbp.cscs.ch/home/kumbhar-adm/SPACK_HOME/licenses and the directory looks like
+> Above is BBP specific licenses. The directory looks like
 
 ```
 	$ tree
@@ -60,34 +66,38 @@ Note that this is required only if you are installing licensed software componen
 Some software tarballs are very large and often time consuming to download (e.g. Intel Parallel Studio is about ~3 GB). In order to avoid download on every new installation we can create a mirror where softwares could be stored. You can check [spack mirror]() documentation for details and extra options. There are options to provide text file but we are simply adding softwares one-by-one:
 
 ```
-mkdir -p $HOME/SPACK_HOME/install_home/mirror
-spack mirror add local_filesystem $HOME/SPACK_HOME/install_home/mirror
+export COMPILERS_HOME=$WORKSPACE/SPACK_HOME/install_home/externals
+
+mkdir -p $COMPILERS_HOME/extra/mirror
+
+spack mirror add local_filesystem $COMPILERS_HOME/extra/mirror
 
 packages_to_mirror=(
     'gcc@4.9.3'
     'gcc@5.3.0'
     'gcc@7.2.0'
     'llvm@4.0.1'
-    'intel@17.0.0.1'
-    'intel@16.0.0.1'
+    'intel-parallel-studio@professional.2017.4'
 )
 
 for package in "${packages_to_mirror[@]}"
 do
-    spack mirror create -d $HOME/SPACK_HOME/install_home/mirror --dependencies $package
+    spack mirror create -d $COMPILERS_HOME/extra/mirror --dependencies $package
 done
 ```
+
+> Note :  The `intel@17.0.0.1` and `intel@16.0.0.1` has only C/C++ compilers. It's better to install `intel-parallel-studio` which has all components including fortran compilers.
 
 Some softwares do need manual download from registered account (e.g. PGI compilers). Once you download them you can manually copy them to mirror directory as:
 
 ```
-mkdir -p $HOME/SPACK_HOME/install_home/mirror/pgi
-cp /gpfs/bbp.cscs.ch/home/kumbhar-adm/pgilinux-2017-174-x86_64.tar.gz $HOME/SPACK_HOME/install_home/mirror/pgi/pgi-17.4.tar.gz
+mkdir -p $COMPILERS_HOME/extra/mirror/pgi
+cp /gpfs/bbp.cscs.ch/home/kumbhar-adm/pgilinux-2017-174-x86_64.tar.gz $COMPILERS_HOME/extra/mirror/pgi/pgi-17.4.tar.gz
 
-# don't have license for 17.7
-#cp /gpfs/bbp.cscs.ch/apps/viz/tools/pgi/pgilinux-2017-177-x86_64.tar.gz $HOME/SPACK_HOME/install_home/mirror/pgi/pgi-17.7.tar.gz
+# note that we don't have license for 17.7
+#cp /gpfs/bbp.cscs.ch/apps/viz/tools/pgi/pgilinux-2017-177-x86_64.tar.gz $WORKSPACE/SPACK_HOME/install_home/mirror/pgi/pgi-17.7.tar.gz
 ```
-> Note : For PGI compiler you can keep tarball in some local directory and invoke `spack install` from that same directory.
+> Note : For PGI compiler you can keep tarball in some local directory and invoke `spack install` from that same directory. You have to make sure to rename tarball while copying to mirror i.e. pgilinux-2017-174-x86_64.tar.gz to pgi-17.4.tar.gz
 
 ### Installing Compilers
 By default Spack will find compilers available in `$PATH`. We can see available compilers using :
@@ -108,14 +118,14 @@ We can achieve this by using sample `config.yaml` with below settings:
 
 ```
 config:
-  install_tree: ~/SPACK_HOME/install_home/externals/install
+  install_tree: $COMPILERS_HOME/install
 ```
 
-We will copy the provided `config.yaml` for compilers installation:
+Instead of hardcoding path we will set environmental variable `COMPILERS_HOME`. We will copy the provided `config.yaml` for compilers installation:
 
 ```
-rm -rf $HOME/.spack/linux/*
-cp $HOME/SPACK_HOME/spack-configs/bbprh69/compilers.config.yaml ~/.spack/linux/config.yaml
+rm -rf ~/.spack/linux/*
+cp $WORKSPACE/SPACK_HOME/spack-configs/bbprh69/compilers.config.yaml ~/.spack/linux/config.yaml
 ```
 
 We can now install all required compilers using Spack. Some compilers like `llvm` can't be compiled with old version of gcc (e.g. `llvm` required gcc version `>=4.8`). In this case we will first install newer `gcc` and then use it for `llvm` installation.
@@ -124,15 +134,14 @@ Here is sample script to achieve this:
 
 ```
 compilers=(
-    'intel@17.0.0.1'
-    'intel@16.0.0.1'
+    'intel-parallel-studio@professional.2017.4'
     'gcc@4.9.3'
     'gcc@5.3.0'
     'gcc@7.2.0'
     'pgi+network+nvidia'
 )
 
-core_compiler='gcc@4.4.7'
+core_compiler='gcc@4'
 
 spack compiler find
 
@@ -163,7 +172,7 @@ autoconf-2.69-gcc-4.4.7-faqgymq        help2man-1.47.4-gcc-4.4.7-jrwlm4p      nc
 Spack automatically creates all modules but it's our duty tell which one we want to keep. Copy below settings file and `re-generate` modules as:
 
 ```
-cp $HOME/SPACK_HOME/spack-configs/bbprh69/compilers.modules.yaml ~/.spack/linux/modules.yaml
+cp $WORKSPACE/SPACK_HOME/spack-configs/bbprh69/compilers.modules.yaml ~/.spack/linux/modules.yaml
 spack module refresh --yes-to-all --delete-tree --module-type tcl --yes-to-all
 ```
 
@@ -206,8 +215,8 @@ $ makelocalrc -x ~/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/
 
 ```
 rm -rf ~/.spack/linux/*
-cp $HOME/SPACK_HOME/spack-configs/bbprh69/config.yaml ~/.spack/linux/
-cp $HOME/SPACK_HOME/spack-configs/bbprh69/packages.yaml ~/.spack/linux/
+cp $WORKSPACE/SPACK_HOME/spack-configs/bbprh69/config.yaml ~/.spack/linux/
+cp $WORKSPACE/SPACK_HOME/spack-configs/bbprh69/packages.yaml ~/.spack/linux/
 ```
 
 Let's add compilers. Note that we have either specify complete path or load modules as:
@@ -247,16 +256,16 @@ sed  -i 's#.*fc: null#      fc: /usr/bin/gfortran#' ~/.spack/linux/compilers.yam
 > Intel compilers heavily depend on `LD_LIBRARY_PATH`. We have to either add module entry to `compilers.yaml` and then use `dirty` flag or have to provide configuration file (CFG) as:
 
 ```
--isystem$HOME/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/include #
--Xlinker -L$HOME/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/lib/intel64 #
--Xlinker -rpath=$HOME/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/lib/intel64
+-isystem$WORKSPACE/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/include #
+-Xlinker -L$WORKSPACE/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/lib/intel64 #
+-Xlinker -rpath=$WORKSPACE/SPACK_HOME/install_home/externals/install/linux-rhel6-x86_64/gcc-4.4.7/intel-17.0.0.1/lib/intel64
 ```
 
 > And set following environmental variables before invoking install command:
 
 ```
-export ICCCFG=$HOME/SPACK_HOME/SPACK_HOME/spack-configs/bbprh69/icl.cfg
-export ICPCFG=$HOME/SPACK_HOME/SPACK_HOME/spack-configs/bbprh69/icl.cfg
+export ICCCFG=$WORKSPACE/SPACK_HOME/SPACK_HOME/spack-configs/bbprh69/icl.cfg
+export ICPCFG=$WORKSPACE/SPACK_HOME/SPACK_HOME/spack-configs/bbprh69/icl.cfg
 ```
 ---
 
