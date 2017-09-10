@@ -125,3 +125,5 @@ packages:
             slurm@16.05: /usr
         buildable: False
         version: [16.05]
+    all:
+        compiler: [gcc@4.9.3]
