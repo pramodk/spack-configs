@@ -1,4 +1,7 @@
-# Getting Started With Spack #
+
+## DEPRECATED: Check [Spack-Packages](https://github.com/pramodskumbhar/spack-packages) Repository.
+
+### Getting Started With Spack #
 
 If you are first time here and never used Spack then may be you are interested in:
 
